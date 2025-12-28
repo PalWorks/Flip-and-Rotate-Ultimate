@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Home } from './pages/Home';
 import { PrivacyPolicy } from './pages/PrivacyPolicy';
 import { TermsOfService } from './pages/TermsOfService';
+import { Contact } from './pages/Contact';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 
@@ -27,6 +28,8 @@ const App: React.FC = () => {
         return <PrivacyPolicy />;
       case '#/terms':
         return <TermsOfService />;
+      case '#/contact':
+        return <Contact />;
       case '#/':
       default:
         return <Home />;
