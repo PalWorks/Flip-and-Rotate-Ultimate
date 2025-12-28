@@ -320,9 +320,7 @@ function App() {
       {/* Top Bar */}
       <div style={styles.topBar}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ width: '24px', height: '24px', background: 'linear-gradient(135deg, #8ab4f8, #1a73e8)', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <RotateCcw color="#202124" size={14} />
-          </div>
+          <img src="/icons/icon-48.png" alt="Logo" style={{ width: '24px', height: '24px', borderRadius: '6px' }} />
           <h1 style={styles.title}>Flip & Rotate</h1>
         </div>
         <div style={{ display: 'flex', gap: '8px' }}>

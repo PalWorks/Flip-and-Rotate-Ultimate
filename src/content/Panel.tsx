@@ -5,7 +5,8 @@ import {
     RotateCcw,
     X,
     MousePointer2,
-    ZoomIn
+    ZoomIn,
+    Settings
 } from 'lucide-react';
 
 interface PanelProps {
@@ -16,10 +17,14 @@ interface PanelProps {
     onZoom: (scale: number) => void;
     onReset: () => void;
     onToggleSelectionMode: () => void;
+    onOpenSettings: () => void;
+    onToggleFullPage: () => void;
     isSelectionMode: boolean;
     currentRotation: number;
     currentZoom: number;
     statusText: string;
+    position: { x: number; y: number };
+    onPositionChange: (pos: { x: number; y: number }) => void;
 }
 
 const Panel: React.FC<PanelProps> = ({
@@ -30,13 +35,18 @@ const Panel: React.FC<PanelProps> = ({
     onZoom,
     onReset,
     onToggleSelectionMode,
+    onOpenSettings,
+    onToggleFullPage,
     isSelectionMode,
     currentRotation,
     currentZoom,
-    statusText
+    statusText,
+    position,
+    onPositionChange
 }) => {
-    const [position, setPosition] = useState({ x: 20, y: 20 });
+    // const [position, setPosition] = useState({ x: 20, y: 20 }); // Lifted up
     const [isDragging, setIsDragging] = useState(false);
+    const [showSettingsMenu, setShowSettingsMenu] = useState(false);
     const dragStart = useRef({ x: 0, y: 0 });
     const dialRef = useRef<HTMLDivElement>(null);
 
@@ -49,7 +59,7 @@ const Panel: React.FC<PanelProps> = ({
     useEffect(() => {
         const handleMouseMove = (e: MouseEvent) => {
             if (isDragging) {
-                setPosition({
+                onPositionChange({
                     x: e.clientX - dragStart.current.x,
                     y: e.clientY - dragStart.current.y
                 });
@@ -112,7 +122,7 @@ const Panel: React.FC<PanelProps> = ({
                 fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
                 width: '260px',
                 userSelect: 'none',
-                overflow: 'hidden',
+                overflow: 'visible', // Allow menu to overflow
                 border: '1px solid #333'
             }}
         >
@@ -158,6 +168,21 @@ const Panel: React.FC<PanelProps> = ({
           cursor: pointer;
           border: 2px solid #222;
         }
+        .settings-menu-item {
+            padding: 8px 12px;
+            cursor: pointer;
+            color: #d1d5db;
+            font-size: 13px;
+            display: block;
+            width: 100%;
+            text-align: left;
+            background: none;
+            border: none;
+        }
+        .settings-menu-item:hover {
+            background: #333;
+            color: #fff;
+        }
       `}</style>
 
             {/* Header / Drag Handle */}
@@ -170,7 +195,9 @@ const Panel: React.FC<PanelProps> = ({
                     justifyContent: 'space-between',
                     alignItems: 'center',
                     background: '#2a2a2a',
-                    borderBottom: '1px solid #333'
+                    borderBottom: '1px solid #333',
+                    borderTopLeftRadius: '12px',
+                    borderTopRightRadius: '12px'
                 }}
             >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -185,20 +212,61 @@ const Panel: React.FC<PanelProps> = ({
                         {statusText}
                     </span>
                 </div>
-                <button
-                    onClick={onClose}
-                    className="no-drag"
-                    style={{
-                        background: 'none',
-                        border: 'none',
-                        color: '#6b7280',
-                        cursor: 'pointer',
-                        padding: '2px',
-                        display: 'flex'
-                    }}
-                >
-                    <X size={16} />
-                </button>
+                <div className="no-drag" style={{ display: 'flex', gap: '4px' }}>
+                    <div style={{ position: 'relative' }}>
+                        <button
+                            onClick={() => setShowSettingsMenu(!showSettingsMenu)}
+                            style={{
+                                background: 'none',
+                                border: 'none',
+                                color: showSettingsMenu ? '#fff' : '#6b7280',
+                                cursor: 'pointer',
+                                padding: '2px',
+                                display: 'flex'
+                            }}
+                        >
+                            <Settings size={16} />
+                        </button>
+                        {showSettingsMenu && (
+                            <div style={{
+                                position: 'absolute',
+                                top: '100%',
+                                right: 0,
+                                marginTop: '8px',
+                                background: '#222',
+                                border: '1px solid #333',
+                                borderRadius: '8px',
+                                width: '180px',
+                                boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
+                                zIndex: 2147483647,
+                                overflow: 'hidden'
+                            }}>
+                                <button className="settings-menu-item" onClick={() => { onOpenSettings(); setShowSettingsMenu(false); }}>
+                                    Open Extension Settings
+                                </button>
+                                <button className="settings-menu-item" onClick={() => { onOpenSettings(); setShowSettingsMenu(false); }}>
+                                    Enable in Incognito
+                                </button>
+                                <button className="settings-menu-item" onClick={() => { onToggleFullPage(); setShowSettingsMenu(false); }}>
+                                    Show Full Page Options
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                    <button
+                        onClick={onClose}
+                        style={{
+                            background: 'none',
+                            border: 'none',
+                            color: '#6b7280',
+                            cursor: 'pointer',
+                            padding: '2px',
+                            display: 'flex'
+                        }}
+                    >
+                        <X size={16} />
+                    </button>
+                </div>
             </div>
 
             {/* Controls */}

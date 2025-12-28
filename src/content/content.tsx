@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { createRoot, Root } from 'react-dom/client';
 import Panel from './Panel';
+import FullPagePanel from './FullPagePanel';
 
 // Inlined from types.ts to avoid import issues in content script
 enum ActionType {
@@ -10,7 +11,9 @@ enum ActionType {
   RESET = 'RESET',
   UPDATE_SETTINGS = 'UPDATE_SETTINGS',
   GET_STATE = 'GET_STATE',
-  TOGGLE_INTERACTIVE = 'TOGGLE_INTERACTIVE'
+  TOGGLE_INTERACTIVE = 'TOGGLE_INTERACTIVE',
+  OPEN_PANEL = 'OPEN_PANEL',
+  OPEN_SETTINGS = 'OPEN_SETTINGS'
 }
 
 enum TargetScope {
@@ -62,7 +65,7 @@ const pageState: TransformState = {
 };
 
 // Interactive Mode State
-let isInteractiveMode = false;
+let isPanelOpen = false;
 let isSelectionMode = false;
 let shadowHost: HTMLElement | null = null;
 let reactRoot: Root | null = null;
@@ -84,7 +87,6 @@ if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.onChanged)
     if (namespace === 'sync' && changes.settings) {
       settings = changes.settings.newValue;
       // Re-apply animations preference globally
-      updateGlobalStyles();
     }
   });
 }
@@ -122,14 +124,6 @@ document.addEventListener('contextmenu', (e) => {
     return;
   }
   lastClickedElement = e.target as HTMLElement;
-
-  // Visual feedback for selection
-  if (lastClickedElement && isWhitelisted() && !isInteractiveMode) {
-    lastClickedElement.classList.add('flip-ext-highlight');
-    setTimeout(() => {
-      lastClickedElement?.classList.remove('flip-ext-highlight');
-    }, 1500);
-  }
 }, true);
 
 // Selection Mode Listeners
@@ -166,8 +160,11 @@ function handleSelection(element: HTMLElement) {
   selectedElement.classList.add('flip-ext-selected');
   selectedElement.classList.remove('flip-ext-highlight');
 
+  // Keep selection mode active or disable it? 
+  // User request: "as soon as the modal has popped-up, I want the element selector action to get active"
+  // Usually selection mode ends after selection. Let's end it but keep panel open.
   isSelectionMode = false;
-  renderPanel(); // Update panel to show selected status
+  renderPanel();
 }
 
 
@@ -179,8 +176,14 @@ if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.onMessage)
       return;
     }
 
+    if (message.type === ActionType.OPEN_PANEL) {
+      openPanel();
+      return;
+    }
+
     if (message.type === ActionType.TOGGLE_INTERACTIVE) {
-      toggleInteractiveMode();
+      // Legacy support if needed, but OPEN_PANEL replaces this
+      openPanel();
       return;
     }
 
@@ -202,15 +205,18 @@ if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.onMessage)
   });
 }
 
-// --- Interactive Mode Logic ---
+// --- Panel Logic ---
 
-function toggleInteractiveMode() {
-  isInteractiveMode = !isInteractiveMode;
-  if (isInteractiveMode) {
-    mountPanel();
-  } else {
-    unmountPanel();
-  }
+function openPanel() {
+  if (isPanelOpen) return;
+  isPanelOpen = true;
+  isSelectionMode = true; // Auto-enable selection mode on open
+  mountPanel();
+}
+
+function closePanel() {
+  isPanelOpen = false;
+  unmountPanel();
 }
 
 function mountPanel() {
@@ -218,7 +224,10 @@ function mountPanel() {
 
   shadowHost = document.createElement('div');
   shadowHost.id = 'flip-rotate-interactive-root';
-  document.body.appendChild(shadowHost);
+
+  // Attach to documentElement to avoid body transforms affecting the UI
+  // This ensures "modals should not be subject to rotation or flipping"
+  document.documentElement.appendChild(shadowHost);
 
   const shadowRoot = shadowHost.attachShadow({ mode: 'open' });
   const container = document.createElement('div');
@@ -244,38 +253,109 @@ function unmountPanel() {
   isSelectionMode = false;
 }
 
+// React Component to manage Panel State
+// React Component to manage Panel State
+const PanelContainer = () => {
+  const [showFullPage, setShowFullPage] = useState(false);
+  const [panelPosition, setPanelPosition] = useState({ x: 20, y: 20 });
+  // Force update to re-render when external state changes
+  const [, forceUpdate] = useState({});
+
+  useEffect(() => {
+    // Expose a render function to the outside world
+    (window as any).__flip_render_panel = () => forceUpdate({});
+    return () => { (window as any).__flip_render_panel = null; };
+  }, []);
+
+  const target = selectedElement || document.body;
+  const elementState = getElementState(target, selectedElement ? TargetScope.ELEMENT : TargetScope.PAGE);
+
+  // Full Page State
+  const fullPageState = pageState;
+  const FULL_PAGE_OFFSET_Y = 180;
+
+  return (
+    <>
+      <Panel
+        onClose={closePanel}
+        onFlipX={() => updateTransform(ActionType.FLIP_X, undefined, TargetScope.ELEMENT)}
+        onFlipY={() => updateTransform(ActionType.FLIP_Y, undefined, TargetScope.ELEMENT)}
+        onRotate={(deg) => updateTransform(ActionType.ROTATE, { degrees: deg, relative: false }, TargetScope.ELEMENT)}
+        onZoom={(scale) => updateTransform(ActionType.ROTATE, { zoom: scale }, TargetScope.ELEMENT)}
+        onReset={() => updateTransform(ActionType.RESET, undefined, TargetScope.ELEMENT)}
+        onToggleSelectionMode={() => {
+          isSelectionMode = !isSelectionMode;
+          renderPanel();
+        }}
+        onOpenSettings={() => {
+          chrome.runtime.sendMessage({ type: ActionType.OPEN_SETTINGS });
+        }}
+        onToggleFullPage={() => setShowFullPage(!showFullPage)}
+        isSelectionMode={isSelectionMode}
+        currentRotation={elementState.rotation}
+        currentZoom={elementState.zoom}
+        statusText={selectedElement ? selectedElement.tagName : 'Select Element'}
+        position={panelPosition}
+        onPositionChange={setPanelPosition}
+      />
+
+      {showFullPage && (
+        <FullPagePanel
+          onClose={() => setShowFullPage(false)}
+          onFlipX={() => updateTransform(ActionType.FLIP_X, undefined, TargetScope.PAGE)}
+          onFlipY={() => updateTransform(ActionType.FLIP_Y, undefined, TargetScope.PAGE)}
+          onRotate={(deg) => updateTransform(ActionType.ROTATE, { degrees: deg, relative: false }, TargetScope.PAGE)}
+          onReset={() => updateTransform(ActionType.RESET, undefined, TargetScope.PAGE)}
+          currentRotation={fullPageState.rotation}
+          position={{ x: panelPosition.x, y: panelPosition.y + FULL_PAGE_OFFSET_Y }}
+        />
+      )}
+    </>
+  );
+};
+
 function renderPanel() {
   if (!reactRoot) return;
-
-  const target = selectedElement || document.body;
-  const state = getElementState(target, selectedElement ? TargetScope.ELEMENT : TargetScope.PAGE);
-
-  reactRoot.render(
-    <Panel
-      onClose={toggleInteractiveMode}
-      onFlipX={() => updateTransform(ActionType.FLIP_X)}
-      onFlipY={() => updateTransform(ActionType.FLIP_Y)}
-      onRotate={(deg) => updateTransform(ActionType.ROTATE, { degrees: deg, relative: false })}
-      onZoom={(scale) => updateTransform(ActionType.ROTATE, { zoom: scale })} // Reusing ROTATE type for generic update or add new type? Let's hack it for now or add ZOOM type.
-      // Actually, let's just use a direct update helper
-      onReset={() => updateTransform(ActionType.RESET)}
-      onToggleSelectionMode={() => {
-        isSelectionMode = !isSelectionMode;
-        renderPanel();
-      }}
-      isSelectionMode={isSelectionMode}
-      currentRotation={state.rotation}
-      currentZoom={state.zoom}
-      statusText={selectedElement ? selectedElement.tagName : 'PAGE'}
-    />
-  );
+  // If the component is already mounted, trigger a re-render via the exposed method
+  if ((window as any).__flip_render_panel) {
+    (window as any).__flip_render_panel();
+  } else {
+    reactRoot.render(<PanelContainer />);
+  }
 }
 
-function updateTransform(action: ActionType, payload?: any) {
-  const target = selectedElement || document.body;
-  const scope = selectedElement ? TargetScope.ELEMENT : TargetScope.PAGE;
+function updateTransform(action: ActionType, payload?: any, forcedScope?: TargetScope) {
+  // Determine target and scope
+  // If forcedScope is provided (e.g. from FullPagePanel), use it.
+  // Otherwise default to selected element or body.
 
-  // Special handling for Zoom since I didn't add ActionType.ZOOM yet
+  let target: HTMLElement;
+  let scope: TargetScope;
+
+  if (forcedScope === TargetScope.PAGE) {
+    target = document.body;
+    scope = TargetScope.PAGE;
+  } else {
+    // Default / Element Panel behavior
+    // If we are in element panel, we operate on selectedElement. 
+    // If no selectedElement, we shouldn't really be doing anything unless we fallback to page?
+    // But user wants "Element Selector" to be primary.
+    if (selectedElement) {
+      target = selectedElement;
+      scope = TargetScope.ELEMENT;
+    } else {
+      // Fallback or ignore?
+      // Let's fallback to body but treat as ELEMENT scope if we want to support "Flip Body as Element"?
+      // No, let's just default to PAGE scope if nothing selected, OR warn user.
+      // Given the UI shows "Select Element", maybe we just return?
+      // But for Zoom, we might want to zoom page?
+      // Let's assume if no element selected, we target body as PAGE.
+      target = document.body;
+      scope = TargetScope.PAGE;
+    }
+  }
+
+  // Special handling for Zoom
   if (payload && payload.zoom !== undefined) {
     const state = getElementState(target, scope);
     state.zoom = payload.zoom;
@@ -362,9 +442,46 @@ function applyTransformToElement(element: HTMLElement, state: TransformState, sc
 
   element.style.transform = transformString;
 
-  // For page scope, ensure body takes up full height/width so rotation doesn't clip
-  if (scope === TargetScope.PAGE && state.rotation % 180 !== 0) {
-    document.body.style.minHeight = '100vh';
-    document.body.style.overflow = 'auto'; // allow scrolling if rotated
+  // For page scope, ensure body takes up full height/width so transforms don't clip or collapse
+  if (scope === TargetScope.PAGE) {
+    const hasTransform = state.flipX || state.flipY || state.rotation !== 0 || state.zoom !== 1;
+
+    // Capture current scroll position before applying transform
+    const scrollTop = window.scrollY;
+    const scrollLeft = window.scrollX;
+    const scrollHeight = document.documentElement.scrollHeight;
+    const scrollWidth = document.documentElement.scrollWidth;
+    const clientHeight = document.documentElement.clientHeight;
+    const clientWidth = document.documentElement.clientWidth;
+
+    if (hasTransform) {
+      document.body.style.minHeight = '100vh';
+      document.body.style.overflow = 'auto'; // allow scrolling if rotated/flipped
+      // Ensure the transform origin is center for page flips to look natural
+      document.body.style.transformOrigin = 'center center';
+
+      // SCROLL CORRECTION
+      // When flipping, the scroll position stays the same relative to the top/left,
+      // but visually the content we were looking at might have moved to the bottom/right.
+      // We need to invert the scroll position to keep the user's view stable.
+
+      if (state.flipY) {
+        // Invert scroll position relative to the new bottom
+        const newScrollTop = scrollHeight - scrollTop - clientHeight;
+        window.scrollTo(scrollLeft, newScrollTop);
+      }
+
+      if (state.flipX) {
+        // Invert scroll position relative to the new right
+        const newScrollLeft = scrollWidth - scrollLeft - clientWidth;
+        window.scrollTo(newScrollLeft, scrollTop);
+      }
+
+    } else {
+      // Cleanup styles when reset
+      document.body.style.minHeight = '';
+      document.body.style.overflow = '';
+      document.body.style.transformOrigin = '';
+    }
   }
 }

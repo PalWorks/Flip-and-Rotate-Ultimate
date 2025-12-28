@@ -5,7 +5,10 @@ enum ActionType {
   ROTATE = 'ROTATE',
   RESET = 'RESET',
   UPDATE_SETTINGS = 'UPDATE_SETTINGS',
-  GET_STATE = 'GET_STATE'
+  GET_STATE = 'GET_STATE',
+  TOGGLE_INTERACTIVE = 'TOGGLE_INTERACTIVE',
+  OPEN_PANEL = 'OPEN_PANEL',
+  OPEN_SETTINGS = 'OPEN_SETTINGS'
 }
 
 enum TargetScope {
@@ -60,6 +63,25 @@ if (typeof chrome !== 'undefined' && chrome.runtime && chrome.contextMenus) {
       title: 'Reset Element',
       contexts: ['all']
     });
+  });
+
+  // Handle Extension Icon Click
+  if (chrome.action) {
+    chrome.action.onClicked.addListener((tab: any) => {
+      if (tab?.id) {
+        chrome.tabs.sendMessage(tab.id, {
+          type: ActionType.OPEN_PANEL,
+          scope: TargetScope.PAGE
+        });
+      }
+    });
+  }
+
+  // Handle Messages (e.g. Open Settings)
+  chrome.runtime.onMessage.addListener((message: any, sender: any, sendResponse: any) => {
+    if (message.type === ActionType.OPEN_SETTINGS) {
+      chrome.runtime.openOptionsPage ? chrome.runtime.openOptionsPage() : window.open(chrome.runtime.getURL('options.html'));
+    }
   });
 
   // Handle Context Menu Clicks
