@@ -1,5 +1,4 @@
 import React from 'react';
-import { GithubIcon } from './Icons';
 
 export const Footer: React.FC = () => {
   return (
@@ -30,13 +29,12 @@ export const Footer: React.FC = () => {
             <ul className="space-y-2 text-sm">
               <li>
                 <a
-                  href="https://github.com"
+                  href="https://github.com/PalWorks/Flip-and-Rotate-Ultimate"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 hover:text-white transition-colors"
+                  className="hover:text-white transition-colors"
                 >
-                  <GithubIcon className="w-4 h-4" />
-                  GitHub Repository
+                  Source Code
                 </a>
               </li>
               <li><a href="#/contact" className="hover:text-primary-400 transition-colors">Contact Support</a></li>
