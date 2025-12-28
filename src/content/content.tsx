@@ -541,6 +541,18 @@ function updateTransform(action: ActionType, payload?: any, forcedScope?: Target
 
   applyTransform(target, scope, action, payload);
 
+  // Special handling for RESET: Deselect and re-enable selection mode
+  if (action === ActionType.RESET && scope === TargetScope.ELEMENT) {
+    if (selectedElement) {
+      selectedElement.classList.remove('flip-ext-selected');
+      selectedElement = null;
+    }
+    if (selectionOverlay) selectionOverlay.style.display = 'none';
+    isSelectionMode = true;
+    renderPanel();
+    return;
+  }
+
   // Update overlay position after transform (in case it moved/resized)
   // We might need a slight delay or to wait for transition?
   // If animations are enabled, the rect changes over time.
