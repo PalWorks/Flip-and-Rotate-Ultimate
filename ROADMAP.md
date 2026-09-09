@@ -14,49 +14,74 @@ Last reviewed: 2026-09-09
 
 **Read this table first.** Everything below is detail on these rows.
 
+Last execution: 2026-09-09. Shipped as manifest version **1.3.0**, which delivers the v1.1.0,
+v1.2.0 and v1.3.0 milestones together. 1.1.0 and 1.2.0 were never released separately.
+
 | Phase | Milestone | Bucket focus | Items | Done | Open | Status | Exit criteria | Next action |
 |---|---|---|---|---|---|---|---|---|
-| **0** | Audit and documentation | DOC | 1 | 1 | 0 | **Complete** 2026-09-09 | Full doc set committed, every backlog item has an ID and acceptance criteria | Done. No further action |
-| **1** | v1.1.0 Rating recovery | EXT, WEB, STORE | 8 | 0 | 8 | **Not started** | The advertised product is reachable: works on pre-existing tabs, fails loudly when it cannot, every store claim is true, site links resolve to the listing | Start **EXT-01** |
-| **2** | v1.2.0 Correctness | EXT, WEB, QA | 7 | 0 | 7 | Not started, blocked on Phase 1 | No known user visible bug on the happy path. A written QA checklist gates every release | Blocked |
-| **3** | v1.3.0 Hygiene | EXT, REL, WEB, STORE, QA, DOC | 12 | 0 | 12 | Not started | Debt paid down so v2 is cheap: one enum, no duplicate artifacts, automated tests, a licence | Blocked |
-| **4** | v2.0.0 | Not scoped | 0 | 0 | 0 | **Not scoped** | Earns the "2.0" the website already claims | Do not start while Phase 1 is open |
+| **0** | Audit and documentation | DOC | 1 | 1 | 0 | **Complete** | Full doc set committed, every backlog item has an ID and acceptance criteria | Done |
+| **1** | v1.1.0 Rating recovery | EXT, WEB, STORE | 8 | 6 | 2 | **Code complete.** 2 store items blocked | The advertised product is reachable | Owner: apply STORE-01 and STORE-03 in the dashboard |
+| **2** | v1.2.0 Correctness | EXT, WEB, QA | 7 | 7 | 0 | **Complete** | No known user visible bug on the happy path | Done |
+| **3** | v1.3.0 Hygiene | EXT, REL, WEB, STORE, QA, DOC | 12 | 10 | 2 | **Code complete.** 1 store item, 1 decision | Debt paid down so v2 is cheap | Owner: decide REL-03, apply STORE-02 |
+| **4** | v2.0.0 | Not scoped | 0 | 0 | 0 | **Not scoped** | Earns the "2.0" the website claimed | Do not start until Phase 1 store items are applied |
 
 ### Status by bucket
 
-| Bucket | Meaning | Total | Open | P0 open |
-|---|---|---|---|---|
-| `EXT` | Extension code | 12 | 12 | 4 |
-| `WEB` | Marketing website | 5 | 5 | 2 |
-| `STORE` | Chrome Web Store listing, dashboard only | 3 | 3 | 2 |
-| `REL` | Release and CI process | 3 | 3 | 0 |
-| `QA` | Testing | 2 | 2 | 0 |
-| `DOC` | Documentation | 2 | 1 | 0 |
-| | **Total** | **27** | **26** | **8** |
+| Bucket | Meaning | Total | Done | Open | Open items |
+|---|---|---|---|---|---|
+| `EXT` | Extension code | 12 | 12 | 0 | none |
+| `WEB` | Marketing website | 5 | 5 | 0 | none |
+| `STORE` | Chrome Web Store dashboard, **owner action only** | 3 | 0 | 3 | STORE-01, STORE-02, STORE-03 |
+| `REL` | Release and CI process | 3 | 2 | 1 | REL-03 needs a decision |
+| `QA` | Testing | 2 | 2 | 0 | none |
+| `DOC` | Documentation | 2 | 2 | 0 | none |
+| | **Total** | **27** | **23** | **4** | 3 dashboard edits, 1 decision |
 
-### Done so far
+### Shipped in 1.3.0
 
-| What | When | Notes |
+| ID | What changed | Verified by |
 |---|---|---|
-| Full repository audit | 2026-09-09 | Local, GitHub and published store listing compared three ways |
-| Artifact integrity verified | 2026-09-09 | Local `extension.zip`, the `v1.0.1` tag copy and the `v1.0.0` release asset are byte identical file for file |
-| Documentation set | 2026-09-09 | README, ARCHITECTURE, ROADMAP, AGENTS, DECISIONS, LIMITATIONS, PLAYBOOK, SECURITY, CHANGELOG |
-| Knowledge graph | 2026-09-09 | `graphify-out/`, 331 nodes, 405 edges, 23 labelled communities |
-| v1.0.0 shipped | 2026-01-01 | ~3,000 users, 3.7 rating from 6 ratings |
+| EXT-01 | Works on tabs opened before install. PING probe, then `scripting.executeScript` under `activeTab` | `dist/background.js` contains the probe and inject path | Open |
+| EXT-02 | Tab scoped badge and tooltip, two distinct messages | Unit tested: we never tell a user to refresh a `chrome://` page | Open |
+| EXT-03 | Per page instance marker tears down an orphaned script on update | `__flipRotateUltimateInstance` present in build | Open |
+| EXT-04 | Whitelist removed entirely | Zero occurrences of `whitelist` in `dist/` | Open |
+| EXT-05 | `window.open` fallback removed, `OPEN_SETTINGS` deleted | No options page needed | **Done** |
+| EXT-06 | Scroll correction runs only on the flip transition | Manual QA regression step added | Open |
+| EXT-07 | Hotkeys guarded on inputs, contenteditable, IME, modifiers | `isContentEditable` present in build | Open |
+| EXT-08 | One copy of `ActionType` and `TargetScope` in `types.ts` | `tsc --noEmit` clean under `strict` | **Done** |
+| EXT-09 | `ZOOM` is its own action type | No `{zoom}` payload on `ROTATE` | **Done** |
+| EXT-10 | `GET_STATE` no longer re-applies the transform | Read path returns before dispatch | **Done** |
+| EXT-11 | 952 KB of store artwork moved out of `public/` | `dist` is 264 KB, was ~1.2 MB | Open |
+| EXT-12 | Animations toggle in the panel settings menu | Persists via `storage.sync` | Open |
+| WEB-01 | Five CTAs behind one `STORE_URL` constant | Listing URL present in deployed bundle, zero old URLs | Open |
+| WEB-02 | `/index.css` 404 and esm.sh importmap removed | Zero occurrences in built `index.html` | Open |
+| WEB-03 | Version copy reads from `EXTENSION_VERSION` | Zero "2.0" claims remain | Open |
+| WEB-04 | Privacy policy splits extension from website, names GA4, Clarity, Tally | Sections 2 and 3 | Open |
+| WEB-05 | `website/.vite` untracked and ignored | | **Done** |
+| REL-01 | `extension.zip` untracked. CI already builds it per tag | | **Done** |
+| REL-02 | Stale `v1.0.1` tag deleted locally | Remote deletion needs a push | **Done** |
+| QA-01 | Manual QA checklist extended with EXT-01, 02, 06, 07 regression steps | PLAYBOOK.md | Open |
+| QA-02 | Vitest harness, 36 tests over `src/lib` | `npm test` | **Done** |
+| DOC-01 | Full doc set updated to match shipped state | | **Done** |
+| DOC-02 | MIT `LICENSE` added | Backs the open source claim the site already made | **Done** |
 
-### Not done, and honestly stated
+### Open, and why
 
-- Zero automated tests exist.
-- No `LICENSE` file exists, while the website and store listing both claim open source. DOC-02.
-- No feature work has started. Every code item below is open.
+| ID | Blocked on | Action |
+|---|---|---|
+| STORE-01 | Chrome Web Store dashboard access | Set privacy policy URL to `.../#/privacy`. Deploy the site first | Open |
+| STORE-02 | Dashboard access | Add the 0.5x to 3x zoom slider to the listing copy | Owner, dashboard |
+| STORE-03 | Dashboard access | Remove the whitelist claim. **Must ship with the 1.3.0 upload, not after** | Open |
+| REL-03 | A decision from the owner | Delete the abandoned `gh-pages` branch, or document why it stays | Needs a decision |
 
-### Decisions pending from the product owner
+### Decisions taken
 
-| # | Decision | Recommendation | Blocks |
-|---|---|---|---|
-| 1 | Remove the whitelist entirely | **Remove.** Chrome's native per site access control already does this, better and more discoverably. See EXT-04 | EXT-04, STORE-03 |
-| 2 | Licence to declare | MIT, to match the open source claim already made publicly | DOC-02 |
-| 3 | Commit `graphify-out/` or gitignore it | Mild preference to ignore and rebuild per session | Nothing |
+| # | Decision | Outcome |
+|---|---|---|
+| 1 | Remove the whitelist | **Confirmed and done.** See DECISIONS.md D10 |
+| 2 | Licence | **MIT.** `LICENSE` added, DOC-02 |
+| 3 | `graphify-out/` | **Gitignored** |
+| 4 | Sequencing | EXT-08 pulled forward from v1.3.0 to first, so EXT-01 could add `PING` in one place instead of three |
 
 ---
 
@@ -127,6 +152,8 @@ users can tell us something more useful than a number.
 ## P0 backlog: ship in v1.1.0
 
 ### EXT-01 Work on tabs that were already open
+
+> **DONE in 1.3.0.**
 
 **Priority:** P0. This is the flagship item.
 
@@ -205,6 +232,8 @@ existing send.
 
 ### EXT-02 Tell the user when we genuinely cannot run
 
+> **DONE in 1.3.0.**
+
 **Priority:** P0. Ships with EXT-01, useless without it.
 
 **Problem.** Some URLs can never host a content script no matter what we do: `chrome://`,
@@ -247,6 +276,8 @@ Recommendation: badge plus title in v1.1.0, measure, escalate only if needed.
 ---
 
 ### EXT-04 Remove the whitelist
+
+> **DONE in 1.3.0.**
 
 **Priority:** P0. **Status: recommended, pending product owner confirmation.**
 
@@ -306,6 +337,8 @@ version of something Chrome gives away.
 
 ### EXT-11 Stop shipping dead code to users
 
+> **DONE in 1.3.0.**
+
 **Priority:** P0. Trivial fix, embarrassing if found by a reviewer.
 
 **Problem.** Every published artifact, including the `v1.0.0` GitHub release asset that was verified
@@ -325,6 +358,8 @@ payload and nothing references them. `manifest.json` does not mention either fil
 ---
 
 ### WEB-01 Point the website at our actual store listing
+
+> **DONE in 1.3.0.**
 
 **Priority:** P0. Highest value to effort ratio in the entire backlog.
 
@@ -348,6 +383,8 @@ on a generic store front page.
 ---
 
 ### WEB-04 Disclose website analytics in the privacy policy
+
+> **DONE in 1.3.0.**
 
 **Priority:** P0. Compliance exposure.
 
@@ -406,6 +443,8 @@ attract review problems.
 
 ### EXT-03 Survive extension updates on open tabs
 
+> **DONE in 1.3.0.**
+
 Same class of failure as EXT-01, different trigger. When the extension updates, content scripts
 already running in open tabs are orphaned. Their `chrome.runtime` handle is invalidated and every
 call throws `Extension context invalidated`. EXT-01's probe will fail for those tabs, so injection
@@ -419,6 +458,8 @@ panel and clears its overlays before the new instance mounts. No duplicate panel
 
 ### EXT-06 Scroll correction fires on every apply
 
+> **DONE in 1.3.0.**
+
 `applyTransformToElement` inverts scroll position whenever `state.flipX` or `state.flipY` is true,
 not only when the flip changes. Rotating or zooming a page that is already flipped re-inverts the
 scroll each time, so the view jumps. Move the correction into the `FLIP_X` and `FLIP_Y` cases in
@@ -428,6 +469,8 @@ scroll each time, so the view jumps. Move the correction into the `FLIP_X` and `
 the initial flip.
 
 ### EXT-07 Panel hotkeys steal page typing
+
+> **DONE in 1.3.0.**
 
 `PanelContainer` registers a `keydown` listener on `document` in the capture phase and acts on bare
 `r` and `h`. While the panel is open, typing the letter r into any page input resets the user's
@@ -439,6 +482,8 @@ nothing. The shortcuts still work when focus is on the page body.
 
 ### WEB-02 Remove the live 404 and the dead importmap
 
+> **DONE in 1.3.0.**
+
 The deployed page requests `/index.css`, which returns 404 on every page load. The file does not
 exist and the absolute path would be wrong under the `/Flip-and-Rotate-Ultimate/` base in any case.
 The page also ships an esm.sh importmap for React 18.3.1 that is redundant, because Vite bundles
@@ -448,6 +493,8 @@ React into `assets/index-*.js`.
 
 ### WEB-03 Stop claiming version 2.0
 
+> **DONE in 1.3.0.**
+
 `website/pages/Home.tsx` says "v2.0: The Ultimate Engineering Update" and
 `website/components/Pricing.tsx` says "Version 2.0 • Compatible with Chrome v88+". The store ships
 1.0.0. Correct the copy to match reality, or defer until a genuine 2.0 exists.
@@ -456,6 +503,8 @@ React into `assets/index-*.js`.
 undermines trust at exactly the moment the visitor is deciding.
 
 ### EXT-12 Expose the animations toggle
+
+> **DONE in 1.3.0.**
 
 `animationsEnabled` is a real, working setting with no user interface. Once the whitelist is removed
 under EXT-04 it is the only setting left, which makes a whole options page disproportionate.
@@ -470,6 +519,8 @@ apply instantly. The choice persists across page loads via `chrome.storage.sync`
 
 ### QA-01 Manual QA checklist
 
+> **DONE in 1.3.0.**
+
 There are zero tests. Before adding a framework, write down what a human must verify before every
 release. See PLAYBOOK.md for the checklist skeleton. This is a prerequisite for releasing EXT-01
 safely, because EXT-01 changes behaviour on every page.
@@ -478,20 +529,20 @@ safely, because EXT-01 changes behaviour on every page.
 
 ## P2 backlog: v1.3.0 hygiene
 
-| ID | Item | Notes |
-|---|---|---|
-| EXT-05 | Remove `window.open` fallback in the `OPEN_SETTINGS` handler | `window` is undefined in an MV3 service worker. The line would throw if reached |
-| EXT-08 | Collapse the three copies of `ActionType` and `TargetScope` into `types.ts` | `background.ts` and `content.tsx` each inline their own. `types.ts` is orphaned and already drifted: it lacks the `zoom` field that `content.tsx` added |
-| EXT-09 | Stop routing zoom through `ActionType.ROTATE` | `onZoom` sends `ROTATE` with a `{zoom}` payload and relies on a special case checked before the action switch. Give zoom its own action type |
-| EXT-10 | `GET_STATE` should not fall through to `applyTransform` | It currently re-applies the existing transform before responding. Harmless today, fragile later |
-| REL-01 | Stop committing `extension.zip` | The release workflow already builds and attaches it on every `v*` tag. The committed copy is duplicate state that has already drifted once |
-| REL-02 | Delete the `v1.0.1` tag | It points at the same commit as `v1.0.0`, has no content difference, and has no GitHub release. A version number that promises a change and delivers none will mislead |
-| REL-03 | Decide the fate of the `gh-pages` branch | Abandoned since commit `1878d10` migrated deployment to `actions/deploy-pages`. Delete it or document why it is kept |
-| WEB-05 | Untrack `website/.vite/deps` | Vite's dependency cache is committed to git |
-| STORE-02 | Add the zoom slider to the store listing | 0.5x to 3x zoom is implemented and shipped but is not mentioned anywhere in the listing copy |
-| QA-02 | Automated test harness | Vitest for pure logic such as `getSmartTarget` and the transform string builder. Playwright for a real Chrome with the unpacked extension, which is the only way to test EXT-01 properly |
-| DOC-01 | Keep this doc set current | Update CHANGELOG.md on every release and DECISIONS.md whenever a rejected alternative is worth recording |
-| DOC-02 | Add a `LICENSE` file | There is none. The website says "Open Source Software" and the store listing carries an "Open Source" badge. Without a licence file the default is all rights reserved, so both claims are currently unbacked. MIT recommended |
+| ID | Item | Notes | Status |
+|---|---|---|---|
+| EXT-05 | Remove `window.open` fallback in the `OPEN_SETTINGS` handler | `window` is undefined in an MV3 service worker. The line would throw if reached | **Done** |
+| EXT-08 | Collapse the three copies of `ActionType` and `TargetScope` into `types.ts` | `background.ts` and `content.tsx` each inline their own. `types.ts` is orphaned and already drifted: it lacks the `zoom` field that `content.tsx` added | **Done** |
+| EXT-09 | Stop routing zoom through `ActionType.ROTATE` | `onZoom` sends `ROTATE` with a `{zoom}` payload and relies on a special case checked before the action switch. Give zoom its own action type | **Done** |
+| EXT-10 | `GET_STATE` should not fall through to `applyTransform` | It currently re-applies the existing transform before responding. Harmless today, fragile later | **Done** |
+| REL-01 | Stop committing `extension.zip` | The release workflow already builds and attaches it on every `v*` tag. The committed copy is duplicate state that has already drifted once | **Done** |
+| REL-02 | Delete the `v1.0.1` tag | It points at the same commit as `v1.0.0`, has no content difference, and has no GitHub release. A version number that promises a change and delivers none will mislead | **Done** |
+| REL-03 | Decide the fate of the `gh-pages` branch | Abandoned since commit `1878d10` migrated deployment to `actions/deploy-pages`. Delete it or document why it is kept | Needs a decision |
+| WEB-05 | Untrack `website/.vite/deps` | Vite's dependency cache is committed to git | **Done** |
+| STORE-02 | Add the zoom slider to the store listing | 0.5x to 3x zoom is implemented and shipped but is not mentioned anywhere in the listing copy | Owner, dashboard |
+| QA-02 | Automated test harness | Vitest for pure logic such as `getSmartTarget` and the transform string builder. Playwright for a real Chrome with the unpacked extension, which is the only way to test EXT-01 properly | **Done** |
+| DOC-01 | Keep this doc set current | Update CHANGELOG.md on every release and DECISIONS.md whenever a rejected alternative is worth recording | **Done** |
+| DOC-02 | Add a `LICENSE` file | There is none. The website says "Open Source Software" and the store listing carries an "Open Source" badge. Without a licence file the default is all rights reserved, so both claims are currently unbacked. MIT recommended | **Done** |
 
 ---
 

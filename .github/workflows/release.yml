@@ -24,8 +24,17 @@ jobs:
             - name: Install Dependencies
               run: npm ci
 
+            - name: Typecheck
+              run: npm run typecheck
+
+            - name: Test
+              run: npm run test
+
             - name: Build Extension
               run: npm run build
+
+            - name: Verify Build
+              run: node scripts/verify-build.js
 
             - name: Zip Extension
               run: |

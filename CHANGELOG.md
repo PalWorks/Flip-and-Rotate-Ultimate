@@ -8,13 +8,67 @@ are noted under the release they shipped alongside.
 
 ---
 
-## Unreleased
+## [1.3.0] 2026-09-09
 
-Documentation set added for agent driven development: `README.md` rewritten from the AI Studio
-scaffold, plus `ARCHITECTURE.md`, `ROADMAP.md`, `DECISIONS.md`, `LIMITATIONS.md`, `PLAYBOOK.md`,
-`SECURITY.md` and this file. `agents.md` renamed to `AGENTS.md` and expanded.
+Delivers the v1.1.0, v1.2.0 and v1.3.0 roadmap milestones together. 1.1.0 and 1.2.0 were never
+released separately, so this is the first release since 1.0.0.
 
-No functional change. See [ROADMAP.md](ROADMAP.md) for what is planned next.
+**Not yet submitted to the Chrome Web Store.** Three dashboard edits must accompany the upload,
+tracked as STORE-01, STORE-02 and STORE-03.
+
+### Added
+
+- **Works on tabs that were already open** (EXT-01). The service worker probes each tab with a
+  `PING` and injects the content script through `chrome.scripting.executeScript` only when nothing
+  answers. Host access comes from `activeTab`, which Chrome grants for all three entry points, so
+  no standing host permission is requested. This was the single largest user facing failure.
+- **Clear failure messaging** (EXT-02). A tab scoped badge and tooltip explain why the extension
+  cannot run. Two distinct messages: refreshing is only suggested for ordinary pages where it can
+  actually help, never for `chrome://` pages or the Web Store.
+- **Animations toggle** in the panel settings menu (EXT-12).
+- **Automated tests** (QA-02). Vitest, 36 tests over the extracted pure logic in `src/lib`. CI now
+  runs typecheck, tests and build verification before every release.
+- **MIT LICENSE** (DOC-02), backing the open source claim the website and store listing already made.
+
+### Fixed
+
+- Orphaned content scripts after an extension update no longer leave duplicate listeners and a stale
+  panel in open tabs (EXT-03).
+- Scroll position no longer jumps when rotating or zooming an already flipped page. The correction
+  ran on every apply instead of only on the flip transition (EXT-06).
+- Panel hotkeys `r` and `h` no longer fire while typing into a page input, textarea or
+  contenteditable, or during IME composition (EXT-07).
+- `GET_STATE` no longer re-applies the current transform as a side effect of a read (EXT-10).
+- All five "Add to Chrome" buttons on the website now reach the actual listing instead of the Chrome
+  Web Store homepage (WEB-01).
+- The website no longer requests a non existent `/index.css` and 404s on every page load (WEB-02).
+- Website version copy no longer claims 2.0 while shipping something else (WEB-03).
+- The privacy policy no longer claims "no usage analytics" on a page running Google Analytics 4 and
+  Microsoft Clarity. Extension and website postures are now separate sections (WEB-04).
+
+### Removed
+
+- **Whitelist support** (EXT-04). Chrome's native Site access control does the same job better and
+  more discoverably, our gate saved no footprint because injection happened regardless, and no user
+  could reach it. See DECISIONS.md D10. The store listing copy must be updated to match.
+- The options page message path and its `window.open` fallback, which would have thrown in an MV3
+  service worker (EXT-05).
+- 952 KB of Chrome Web Store artwork from the packaged extension. `public/` is copied verbatim into
+  `dist/`, so every user was downloading the listing screenshots. Moved to `store-assets/`. The
+  package is now 264 KB, down from about 1.2 MB (EXT-11).
+- The redundant esm.sh React importmap from the website (WEB-02).
+- `extension.zip` from version control. CI builds and attaches it on every `v*` tag (REL-01).
+- The `v1.0.1` tag, which pointed at the same commit as `v1.0.0` with no content difference and no
+  GitHub release. Deleted locally; the remote deletion needs a push (REL-02).
+- `website/.vite` dependency cache from version control (WEB-05).
+
+### Changed
+
+- `ActionType` and `TargetScope` are now declared once in `types.ts` instead of three times, where
+  they had already drifted. Editing one copy used to produce a silent no-op (EXT-08).
+- Zoom has its own `ActionType.ZOOM` instead of riding on `ROTATE` with a `{zoom}` payload (EXT-09).
+- Manifest permissions gain `scripting` and `activeTab`. The description drops the whitelist claim.
+- TypeScript now typechecks under `strict` with Chrome types, and passes clean.
 
 ---
 

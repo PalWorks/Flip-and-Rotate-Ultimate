@@ -12,7 +12,7 @@ symmetry in one click.
 [![Rating](https://img.shields.io/chrome-web-store/rating/nlbnapelehjkadekmfghljagafhbobhp)](https://chromewebstore.google.com/detail/flip-rotate-ultimate/nlbnapelehjkadekmfghljagafhbobhp)
 [![Release](https://img.shields.io/github/v/release/PalWorks/Flip-and-Rotate-Ultimate)](https://github.com/PalWorks/Flip-and-Rotate-Ultimate/releases)
 [![Manifest V3](https://img.shields.io/badge/manifest-v3-blue)](public/manifest.json)
-[![License](https://img.shields.io/badge/license-not%20yet%20declared-lightgrey)](#license)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 [Install from the Chrome Web Store](https://chromewebstore.google.com/detail/flip-rotate-ultimate/nlbnapelehjkadekmfghljagafhbobhp) ·
 [Website](https://palworks.github.io/Flip-and-Rotate-Ultimate/) ·
@@ -106,6 +106,7 @@ was installed.
 | **Keyboard shortcuts** | `Alt+Shift+X`, `Alt+Shift+Y`, `Alt+Shift+R`, remappable at `chrome://extensions/shortcuts` |
 | **Animated transitions** | A cubic bezier ease with overshoot, toggleable |
 | **Memory safe** | Element state lives in a `WeakMap`, so nodes destroyed by a single page application are garbage collected rather than pinned |
+| **Works on open tabs** | Injects on demand into tabs that predate installation, using `activeTab` so no standing site access is requested |
 | **No network access** | Zero `fetch` calls. Nothing leaves the browser. See [Security and Privacy](#security-and-privacy) |
 
 ### Not currently available
@@ -114,7 +115,7 @@ Stated plainly rather than omitted:
 
 - **Persistence.** Transforms reset on reload. There is no per site memory.
 - **Free angle rotation.** The dial snaps to 45 degrees with no modifier to bypass it.
-- **Pre-existing tabs.** Tabs open before install need a refresh. This is the top roadmap item, EXT-01.
+- **Cross browser.** Chrome only for now. Firefox and Edge builds are v2 candidates.
 - **Cross origin iframes.** `all_frames` is not enabled, so content inside a third party iframe is
   out of reach.
 
@@ -197,8 +198,7 @@ For component level detail, data flow traces and the domain vocabulary, see
 
 Install from the [Chrome Web Store](https://chromewebstore.google.com/detail/flip-rotate-ultimate/nlbnapelehjkadekmfghljagafhbobhp).
 
-> **Note.** After installing, tabs you already had open need a refresh before the extension will
-> work in them. This is a known limitation, tracked as EXT-01, and is being fixed.
+Since 1.3.0 it works immediately on tabs you already had open, with no refresh needed.
 
 ### For developers
 
@@ -260,21 +260,14 @@ Stored in `chrome.storage.sync` under the key `settings`.
 | Key | Type | Default | Effect |
 |---|---|---|---|
 | `animationsEnabled` | `boolean` | `true` | Adds the `flip-ext-transition` class, a 0.4s cubic bezier with overshoot |
-| `whitelistRegex` | `string` | `''` | Case insensitive regex tested against `window.location.href`. Empty means enabled everywhere. **Scheduled for removal, see EXT-04.** Use Chrome's own Site access control at `chrome://extensions` instead, which is more discoverable and actually prevents injection |
 
-There is currently no user interface for either setting. Until one ships you can read and write them
-from a page console:
+Toggle animations from the panel's settings menu.
 
-```js
-// read
-chrome.storage.sync.get('settings', console.log);
-
-// disable animations
-chrome.storage.sync.set({ settings: { whitelistRegex: '', animationsEnabled: false } });
-```
-
-An invalid regex fails **open**, meaning the extension stays enabled everywhere and logs a warning.
-This is deliberate: a typo should not silently disable the product with no explanation.
+**Per site control** is handled by Chrome itself, not by us. Right click the extension icon, choose
+"This can read and change site data", then "On click", "On specific sites" or "On all sites". The
+same control is at `chrome://extensions` under Site access. A whitelist feature existed before 1.3.0
+but was removed: it was a worse reimplementation of this, and no user could reach it. See
+[DECISIONS.md](DECISIONS.md) D10.
 
 ### Build time configuration
 
@@ -347,8 +340,8 @@ Active only while the panel is open.
 | `R` | Reset the current transform |
 | `H` | Toggle the full page panel |
 
-> **Known issue.** These fire even when you are typing in a page input. Typing the letter `r` into a
-> search box while the panel is open will reset your transforms. Tracked as EXT-07.
+They are suppressed while you are typing into an input, textarea or contenteditable, and while an
+IME composition is active.
 
 ---
 
@@ -450,8 +443,11 @@ angle, which is what the drag dial uses.
 
 ## Testing
 
-**There are currently no automated tests.** Stating that plainly rather than implying coverage that
-does not exist.
+```bash
+npm test          # vitest, 36 tests
+npm run typecheck # tsc --noEmit, strict
+npm run verify    # build + verify-build + typecheck + test, the full gate
+```
 
 What exists today:
 
@@ -459,17 +455,20 @@ What exists today:
 |---|---|
 | Build integrity | `node scripts/verify-build.js`, mandatory, exits non zero on a broken `dist/` |
 | Functional | A manual QA checklist in [PLAYBOOK.md](PLAYBOOK.md), covering core transforms, panel behaviour, page scope, and a site compatibility spot check |
-| Type checking | TypeScript with `noEmit`. Note that `strict` is not enabled |
+| Type checking | `tsc --noEmit` under `strict` with Chrome types. Passes clean |
+| Unit tests | Vitest, 36 tests over `src/lib`, run by CI before every release |
 
-Planned, tracked as QA-01 and QA-02:
+Unit coverage is deliberately scoped to logic that is pure and worth protecting:
 
-- **Vitest** for pure logic that can be tested without a browser: the transform string builder, the
-  rotation wrap arithmetic, and the whitelist regex evaluation.
-- **Playwright** driving a real Chrome with the unpacked extension loaded. This is the only way to
-  test EXT-01 properly, because the bug is specifically about tab lifecycle relative to install
-  time, which cannot be simulated in jsdom.
+- `src/lib/transform.ts` rotation wrapping, zoom clamping, and the CSS transform string. Includes a
+  regression test for the negative modulo bug that made the dial jump anticlockwise past zero, and
+  one asserting the `rotate scaleX scaleY scale` order that keeps the dial feeling correct.
+- `src/lib/urls.ts` restricted URL classification, including a test that we never tell a user to
+  refresh a `chrome://` page, because refreshing one can never help.
 
-Contributions that add either are welcome and are the highest value contribution available right now.
+**Still missing: end to end coverage.** Playwright driving a real Chrome with the unpacked extension
+is the only way to test EXT-01 properly, because it concerns tab lifecycle relative to install time
+and cannot be simulated in jsdom. That is the highest value contribution available right now.
 
 ---
 
@@ -515,21 +514,17 @@ what serves the live site. Do not push to it.
 
 ## Roadmap
 
-Full detail, with acceptance criteria for every item, lives in [ROADMAP.md](ROADMAP.md). Summary:
+Full detail, with acceptance criteria and status for every item, lives in [ROADMAP.md](ROADMAP.md).
 
-| Milestone | Theme | Headline items |
-|---|---|---|
-| **v1.1.0** | Rating recovery | Work on pre-existing tabs (EXT-01), clear failure messaging (EXT-02), resolve the settings gap (EXT-04), stop shipping dead code (EXT-11), fix the store links on the website (WEB-01) |
-| **v1.2.0** | Correctness | Survive extension updates (EXT-03), scroll jump on flipped pages (EXT-06), hotkeys stealing page input (EXT-07), manual QA checklist (QA-01) |
-| **v1.3.0** | Hygiene | Consolidate the duplicated enums (EXT-08), release process cleanup (REL-01 to REL-03), automated tests (QA-02) |
-| **v2.0.0** | Not yet scoped | Per site transform persistence, free angle rotation, popup based UI, Firefox and Edge builds |
+**1.3.0 delivered 23 of 27 tracked items**, closing the v1.1.0, v1.2.0 and v1.3.0 milestones. The
+headline change is that the extension now works on tabs opened before installation, which was the
+largest user facing failure in 1.0.0.
 
-The single most important item is **EXT-01**. A content script declared in the manifest only injects
-into pages loaded after install, so every tab a user already had open is inert and fails silently.
-The fix uses `activeTab` plus `scripting` to inject on demand at the moment the user invokes the
-extension, which avoids requesting standing access to every site.
+The four remaining items are not code: three are Chrome Web Store dashboard edits that must
+accompany the 1.3.0 upload, and one is a decision about an abandoned `gh-pages` branch.
 
----
+**v2.0.0 is not yet scoped.** Candidates: per site transform persistence, free angle rotation, a
+popup based UI that never depends on a content script, Firefox and Edge builds, undo and redo.
 
 ## Contributing
 
@@ -601,17 +596,10 @@ To report a vulnerability, email support@palworks.ai rather than opening a publi
 
 ## License
 
-**No licence has been declared yet.** There is no `LICENSE` file in this repository.
+[MIT](LICENSE). Copyright 2025-2026 Palaniappan Meyyappan.
 
-The marketing website describes the project as "Open Source Software" and the Chrome Web Store
-listing carries an "Open Source" badge. Those claims are not currently backed by a licence file,
-which means the default position applies: all rights reserved, and nobody has explicit permission to
-reuse the code.
-
-This is tracked as a roadmap item. Adding a permissive licence, most likely MIT, would resolve it
-and match what the site already promises.
-
----
+You may use, copy, modify and distribute this software freely, including commercially, provided the
+copyright notice and permission notice are preserved.
 
 ## Acknowledgements
 

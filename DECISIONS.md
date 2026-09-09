@@ -111,7 +111,7 @@ historical. Keep it so the fail open reasoning is preserved if the feature is ev
 ## D7: `activeTab` plus `scripting`, rather than `host_permissions: ["<all_urls>"]`
 
 **Decision.** For EXT-01, inject on demand using `activeTab` and `scripting`, triggered by the
-user's own gesture. Do not request standing host permissions.
+user's own gesture. Do not request standing host permissions. **Shipped in 1.3.0.**
 
 **Reason.** Verified against Chrome documentation on 2026-09-09: `activeTab` is granted by executing
 an action, executing a context menu item, executing a keyboard shortcut from the commands API, or
@@ -165,7 +165,8 @@ was scaffolded earlier on 18.3.1 and has no reason to move.
 ## D10: The whitelist is removed rather than given a user interface
 
 **Decision.** Remove `whitelistRegex` entirely rather than build the options page that would make it
-usable. Recommended 2026-09-09, pending product owner confirmation. Tracked as EXT-04 and STORE-03.
+usable. **Confirmed by the product owner and shipped in 1.3.0.** Tracked as EXT-04. The matching
+store listing copy change is STORE-03 and is still outstanding.
 
 **Reason.** Chrome already provides per site extension control natively, at
 `chrome://extensions` under Site access and from the icon's right click menu. That control is more

@@ -8,8 +8,16 @@ Step by step operational procedures. Follow these exactly.
 
 ```bash
 npm install
+npm run verify   # build + verify-build + typecheck + tests, the full gate
+```
+
+Or the individual steps:
+
+```bash
 npm run build
 node scripts/verify-build.js
+npm run typecheck
+npm test
 ```
 
 Both commands must exit 0. `npm run build` runs two Vite passes in sequence and the order matters:
@@ -43,7 +51,8 @@ The site uses a hash router, so deep links are `#/privacy`, `#/terms`, `#/contac
 ## Manual QA checklist
 
 Run the whole list for any change to `src/content/` or `background.ts`. Run the marked subset for
-anything else. There are no automated tests, so this is the only safety net.
+anything else. `npm test` covers the pure logic in `src/lib`, but everything below needs a real
+browser, so this checklist is still the only safety net for behaviour.
 
 ### Core transforms
 
@@ -62,15 +71,18 @@ anything else. There are no automated tests, so this is the only safety net.
 - [ ] Hold Shift and click three elements. Badge reads "3 Selected", all three transform together.
 - [ ] Settings menu opens, closes on outside click, and each item does what it says.
 - [ ] `Esc` closes the shortcuts modal if open, otherwise closes the panel.
+- [ ] **EXT-07 regression check:** with the panel open, type "rhubarb" into a page search box.
+      Nothing resets and the full page panel does not toggle.
 - [ ] Panel stays upright while the page underneath is flipped and rotated.
 
 ### Page scope
 
 - [ ] Flip the page vertically. Scroll position stays over the same content.
-- [ ] With the page flipped, rotate it. **EXT-06 regression check:** the view must not jump.
+- [ ] With the page flipped, rotate it three times. **EXT-06 regression check:** the view must not
+      jump after the initial flip.
 - [ ] Reset. `body` inline styles for `min-height`, `overflow` and `transform-origin` are cleared.
 
-### Injection, once EXT-01 lands
+### Injection, EXT-01 and EXT-02
 
 - [ ] Open three ordinary tabs. Install or reload the unpacked extension. Do not refresh the tabs.
 - [ ] Toolbar icon works on all three.
@@ -78,8 +90,23 @@ anything else. There are no automated tests, so this is the only safety net.
 - [ ] Keyboard shortcut works on all three.
 - [ ] On a page loaded after install, one click produces exactly one selection, not two. This proves
       no double injection.
-- [ ] On `chrome://extensions`, the restricted page message appears and no unhandled rejection is
-      logged in the service worker console.
+- [ ] On `chrome://extensions`, a red `!` badge appears and the tooltip reads "Flip & Rotate can't
+      run on this page...". It must **not** say "refresh".
+- [ ] Navigate that tab to an ordinary page. The badge clears on its own.
+- [ ] The badge is scoped to its tab: switching to another tab shows no badge.
+- [ ] No unhandled rejection is logged in the service worker console in either case.
+
+### Update survival, EXT-03
+
+- [ ] Open a page, open the panel, select an element.
+- [ ] Reload the unpacked extension from `chrome://extensions`. Do not refresh the page.
+- [ ] Click the toolbar icon. Exactly one panel appears, not two.
+- [ ] The old panel and its overlays are gone from the page.
+
+### Settings, EXT-12
+
+- [ ] Settings menu shows "Disable Animations". Click it, transforms apply instantly.
+- [ ] Reload the page. The choice persisted, and the menu now reads "Enable Animations".
 
 ### Site compatibility spot check
 
@@ -212,9 +239,10 @@ Work through this in order.
    `about:`, or `file://` without file access enabled. Nothing will fix that. That is EXT-02.
 4. Open the service worker console from `chrome://extensions` and click the extension's
    "service worker" link. Look for `Could not establish connection`.
-5. Check the whitelist. In the page console:
-   `chrome.storage.sync.get('settings', console.log)`. A non empty `whitelistRegex` that does not
-   match the current URL silently disables everything. Until EXT-04 ships there is no UI clue.
+5. Check Chrome's own Site access setting for the extension. Right click the icon, then "This can
+   read and change site data". If it is set to "On click" or a specific site list, that is Chrome
+   blocking us, not a bug. The whitelist we used to ship was removed in 1.3.0; this is its
+   replacement.
 6. Reload the extension from `chrome://extensions`, then reload the page, and retry.
 
 ## Debug: the panel renders but transforms do nothing

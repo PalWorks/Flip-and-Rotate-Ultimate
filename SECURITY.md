@@ -4,7 +4,7 @@ This extension makes a public, verifiable claim: it collects nothing and sends n
 That claim appears on the Chrome Web Store listing and in the privacy policy. This document exists
 so the claim stays true.
 
-Last reviewed: 2026-09-09
+Last reviewed: 2026-09-09, after the 1.3.0 execution
 
 ## The commitment
 
@@ -31,19 +31,19 @@ review asks for exactly this reasoning, and the install prompt shows the consequ
 | Permission | Why it is needed | What it does not allow |
 |---|---|---|
 | `contextMenus` | Builds the right click menu, our primary entry point | No page access on its own |
-| `storage` | Persists `animationsEnabled` via `chrome.storage.sync`. Also `whitelistRegex`, which is scheduled for removal under EXT-04 | No network. Sync is Chrome's own profile sync, not our server |
+| `storage` | Persists `animationsEnabled` via `chrome.storage.sync` | No network. Sync is Chrome's own profile sync, not our server |
+| `scripting` | Injects the content script into tabs that predate installation | Only into a tab we already hold host access for |
+| `activeTab` | Temporary host access to the current tab, granted by the user's own gesture | No standing access to any site. Expires; re-granted on the next gesture |
 | `content_scripts` matching `<all_urls>` | The product's purpose is to transform any page the user chooses | Declared match patterns, not arbitrary host access from the worker |
 
-### Approved for EXT-01, not yet added
+`scripting` and `activeTab` were added in 1.3.0 for EXT-01. The `activeTab` choice is deliberate and
+is recorded in DECISIONS.md as D7: it is the minimum privilege route to injecting into pre-existing
+tabs. It was chosen over `host_permissions: ["<all_urls>"]`, which would request standing access to
+every site the user ever visits. Do not substitute broad host permissions for it without an explicit
+product decision, because it changes the install prompt and invites a stricter review.
 
-| Permission | Why | Chosen over |
-|---|---|---|
-| `scripting` | Required to call `chrome.scripting.executeScript` and inject into tabs that predate install | No alternative exists |
-| `activeTab` | Grants temporary host access to the current tab, only when the user invokes us | `host_permissions: ["<all_urls>"]`, which would request standing access to every site the user ever visits |
-
-The `activeTab` choice is deliberate and is recorded in DECISIONS.md as D7. It is the
-minimum privilege route to solving EXT-01. Do not substitute broad host permissions for it without
-an explicit product decision, because it changes the install prompt and invites a stricter review.
+**Dashboard action required.** The store listing's permission rationale fields must be updated for
+`scripting` and `activeTab` when 1.3.0 is submitted. Tracked as STORE-03.
 
 ### Never add without an explicit product decision
 
@@ -61,10 +61,10 @@ an explicit product decision, because it changes the install prompt and invites 
    not explain is how extensions get taken down.
 4. **Do not log user content.** `console.warn` and `console.error` for diagnostics are fine.
    Never log page URLs, page text, selected element contents or anything derived from them.
-5. **Treat the whitelist as user data** for as long as it exists. It can reveal which sites a user
-   cares about. It stays in `chrome.storage.sync` and never leaves the browser. EXT-04 removes it,
-   which removes this concern entirely. Per site control is better served by Chrome's own Site
-   access setting, which we should point users to rather than reimplement.
+5. **Store as little as possible.** As of 1.3.0 the only persisted setting is `animationsEnabled`,
+   a boolean that reveals nothing about the user. The whitelist, which could have revealed which
+   sites a user cares about, was removed. Per site control is Chrome's own Site access setting; point
+   users at it rather than reimplementing it.
 
 ## Website privacy posture, which is different
 
@@ -78,13 +78,13 @@ separate posture. It **does** run:
 
 It also embeds third party Tally.so iframes for the contact and uninstall feedback forms.
 
-**Open issue.** `website/pages/PrivacyPolicy.tsx` currently states "We do not collect usage
-analytics" without distinguishing extension from website. The statement is true of the extension and
-false of the page it is printed on. WEB-04 fixes this. STORE-01 fixes the related problem that the
-store's privacy policy link lands on the tracked marketing homepage rather than the policy itself.
+**Resolved in 1.3.0 (WEB-04).** The policy now has a section for the extension, which keeps the
+no-data claim because it is accurate and verifiable, and a separate section for the website, which
+names GA4, Clarity and Tally and links their policies.
 
-Do not resolve this by weakening the extension's claim. The extension claim is accurate and
-valuable. Resolve it by separating the two clearly.
+**Still open: STORE-01.** The store's privacy policy field points at the site root, which lands on
+the tracked marketing homepage rather than the policy. It must be changed to
+`https://palworks.github.io/Flip-and-Rotate-Ultimate/#/privacy`.
 
 ## Secrets handling
 

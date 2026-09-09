@@ -67,13 +67,14 @@ panel host and the extension's own overlays, then returns the first `VIDEO`, `IM
 `CANVAS` in the stack, falling back to the topmost element. `handleSelection` supports additive
 selection when Shift, Ctrl or Cmd is held.
 
-**2. Transform state.** Three separate stores, and this is the part most likely to surprise you:
+**2. Transform state.** Three separate stores, and this is the part most likely to surprise you.
+Pure state arithmetic lives in `src/lib/transform.ts` so it can be unit tested without a browser:
 
 | Store | Holds | Lifetime |
 |---|---|---|
 | `elementStates: WeakMap<HTMLElement, TransformState>` | Per element flip, rotation, zoom | Garbage collected when the element leaves the DOM |
 | `pageState: TransformState` | Page scope transform | Module lifetime |
-| `chrome.storage.sync` under key `settings` | `whitelistRegex`, `animationsEnabled` | Persisted, synced across devices |
+| `chrome.storage.sync` under key `settings` | `animationsEnabled` | Persisted, synced across devices |
 
 The `WeakMap` is deliberate. Single page applications tear down and rebuild nodes constantly, and a
 `Map` would pin every element the user ever touched.
@@ -87,7 +88,12 @@ effect on inline boxes. Page scope transforms additionally set `min-height`, `ov
 `transform-origin` on `body`, and invert scroll position so the viewport stays over the same
 content after a flip.
 
-**4. Panel lifecycle.** `mountPanel` attaches a Shadow DOM host to `document.documentElement`, not
+**4. Instance lifecycle.** A marker on `window` identifies the running instance. On startup a new
+instance tears down any previous one, which is how an extension update stops leaving an orphaned
+script with duplicate listeners in an open tab. Every DOM listener hangs off one `AbortController`
+so teardown is a single `abort()` call.
+
+**5. Panel lifecycle.** `mountPanel` attaches a Shadow DOM host to `document.documentElement`, not
 to `body`. This is load bearing: page scope transforms target `body`, so a panel inside `body`
 would rotate along with the page it is controlling.
 
@@ -120,7 +126,7 @@ Note the ordering dependency: the `contextmenu` DOM listener must have already r
 
 | Boundary | Mechanism | Notes |
 |---|---|---|
-| Worker to content script | `chrome.tabs.sendMessage` | Fails silently if no content script is present. See ROADMAP EXT-01 |
+| Worker to content script | `dispatch()` then `chrome.tabs.sendMessage` | `dispatch` calls `ensureInjected` first: PING probe, then `scripting.executeScript` if nothing answers. Never sends blind |
 | Content script to worker | `chrome.runtime.sendMessage` | Only for `OPEN_SETTINGS` and `OPEN_EXT_MANAGEMENT` |
 | Panel UI to page | Shadow DOM | Deliberate isolation in both directions |
 | Extension to website | `chrome.runtime.setUninstallURL` | The only outbound network reference in the extension |
@@ -143,10 +149,11 @@ every content script and every icon it references actually exists on disk.
 
 | Term | Meaning |
 |---|---|
+| Instance marker | A `window` key naming the running content script, used to tear down an orphan |
+| Probe then inject | PING first, inject only if nothing answers. Never inject blind |
 | Scope | Either `PAGE` (targets `document.body`) or `ELEMENT` (targets the selection) |
 | Smart target | The element `getSmartTarget` picks, preferring media over containers |
 | Selection mode | While active, hover highlights and click selects instead of navigating |
-| Whitelist | A regex tested against `window.location.href`. Empty means enabled everywhere |
 | Overlay | A positioned div mirroring an element's bounding box, used for hover and selection tint |
 | Panel host | The Shadow DOM root element, id `flip-rotate-interactive-root` |
 

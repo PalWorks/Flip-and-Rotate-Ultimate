@@ -4,33 +4,38 @@ Known bugs, technical debt and edge cases. Read this before reporting something 
 Every entry maps to a ROADMAP.md ID. If you find something not listed here, add it to ROADMAP.md
 first, then add it here.
 
-Last reviewed: 2026-09-09
+Last reviewed: 2026-09-09, after the 1.3.0 execution
 
 ## Known bugs
 
-| ID | Symptom | Cause | Status |
-|---|---|---|---|
-| EXT-01 | Extension does nothing on tabs that were open before it was installed | Manifest declared content scripts only inject into pages loaded after install. `tabs.sendMessage` rejects and the rejection is swallowed | Open, P0 |
-| EXT-02 | No feedback at all when the extension cannot run on a page | Nothing catches or surfaces the injection failure | Open, P0 |
-| EXT-03 | After an extension update, open tabs hold an orphaned content script whose `chrome.runtime` handle is invalidated | MV3 lifecycle. Same class as EXT-01, different trigger | Open, P1 |
-| EXT-04 | Whitelist cannot be configured by any user | No options page exists, and `Panel.tsx` never renders the `onOpenSettings` control it receives | Open, P0. **Resolution is removal, not a UI.** See DECISIONS.md D10 |
-| EXT-12 | `animationsEnabled` has no user interface either | Same missing settings surface | Open, P1 |
-| EXT-05 | `window.open` fallback in the `OPEN_SETTINGS` handler would throw | `window` is undefined in an MV3 service worker | Open, P2, unreachable in practice |
-| EXT-06 | Page view jumps when rotating or zooming a page that is already flipped | Scroll correction in `applyTransformToElement` runs on every apply, not only on flip transition, so it re-inverts each time | Open, P1 |
-| EXT-07 | Typing the letter r or h into a page input while the panel is open resets transforms or toggles the full page panel | `PanelContainer` keydown listener is on `document` in capture phase with no input guard | Open, P1 |
-| EXT-11 | Published package contains 207 KB of dead popup code | Build still emits `main.js` and `index.html` from the popup UI deleted in `3e2084a` | Open, P0 |
-| WEB-01 | Every "Add to Chrome" button on the marketing site goes to the store homepage, not our listing | Five hardcoded `https://chrome.google.com/webstore` URLs. Our extension ID appears nowhere in the repo | Open, P0 |
-| WEB-02 | Live site requests `/index.css` and gets a 404 on every page load | Absolute path in `website/index.html` to a file that does not exist. Vite does not rewrite it | Open, P1 |
+**None currently open.** Every bug listed at the 2026-09-09 audit was fixed in 1.3.0.
+
+### Resolved in 1.3.0
+
+| ID | Was | Fixed by |
+|---|---|---|
+| EXT-01 | Did nothing on tabs opened before install | PING probe then `scripting.executeScript` under `activeTab` |
+| EXT-02 | Silent failure with no feedback | Tab scoped badge and tooltip, two distinct messages |
+| EXT-03 | Orphaned content script after an extension update | Per page instance marker with an `AbortController` teardown |
+| EXT-04 | Whitelist unreachable by any user | Feature removed. See DECISIONS.md D10 |
+| EXT-05 | `window.open` fallback would throw in a service worker | Removed with the whole `OPEN_SETTINGS` path |
+| EXT-06 | View jumped when transforming an already flipped page | Scroll correction runs only on the flip transition |
+| EXT-07 | Typing `r` in a page input reset transforms | Guarded on inputs, contenteditable, IME and modifiers |
+| EXT-11 | 952 KB of store artwork shipped inside the package | Artwork moved to `store-assets/`, outside `public/` |
+| WEB-01 | Every install button went to the store homepage | One `STORE_URL` constant pointing at the listing |
+| WEB-02 | `/index.css` 404 on every page load | Link and the dead importmap removed |
 
 ## Design debt
 
-| ID | Debt | Consequence |
+**None currently open.** All resolved in 1.3.0.
+
+| ID | Was | Resolved by |
 |---|---|---|
-| EXT-08 | `ActionType` and `TargetScope` are declared three times: `types.ts`, `background.ts`, `src/content/content.tsx` | Adding a message type in one place only produces a silent no-op. `types.ts` has already drifted: it lacks the `zoom` field `content.tsx` added to `TransformState` |
-| EXT-09 | Zoom is sent as `ActionType.ROTATE` with a `{zoom}` payload | Works only because a special case is checked before the action switch. The action name lies about what it does |
-| EXT-10 | `GET_STATE` and `UPDATE_SETTINGS` fall through to `applyTransform` before the `GET_STATE` branch responds | Re-applies the current transform as a side effect of a read. Harmless today because the values are unchanged |
-| REL-01 | `extension.zip` is committed to git and also built by CI | Two sources of truth. They have already diverged once: the committed copy was rebuilt in `ddef884` with different internal timestamps |
-| QA-02 | Zero automated tests | Every regression is caught by a human or by a user |
+| EXT-08 | `ActionType` declared three times, already drifted | One copy in `types.ts`, imported by both sides |
+| EXT-09 | Zoom rode on `ActionType.ROTATE` with a `{zoom}` payload | `ActionType.ZOOM` |
+| EXT-10 | `GET_STATE` re-applied the transform as a side effect | Read path returns before dispatch |
+| REL-01 | `extension.zip` committed and also built by CI | Untracked. CI is the only producer |
+| QA-02 | Zero automated tests | Vitest, 36 tests over `src/lib`, gating every release in CI |
 
 ## Edge cases and platform constraints
 
@@ -62,19 +67,16 @@ them to the user rather than fix them.
 - Element transform state lives in a `WeakMap`. If a single page application replaces the node, the
   transform is lost and the state is garbage collected. This is intentional, see DECISIONS.md.
 - `pageState` is module scoped, so it resets on navigation but survives panel close and reopen.
-- An invalid `whitelistRegex` fails open, meaning the extension stays enabled. This is deliberate,
-  so a typo cannot silently disable the product everywhere. Moot once EXT-04 removes the feature.
+- Per site control is now Chrome's own Site access setting rather than anything we implement.
+  Point users at `chrome://extensions` for it.
 
 ## Store and listing gaps
 
 | ID | Gap |
 |---|---|
-| STORE-01 | Store privacy policy URL lands on the marketing homepage, not the policy |
-| STORE-02 | Zoom slider is implemented and shipped but is not mentioned in the listing |
-| STORE-03 | Listing advertises whitelist support that no user can reach. Copy must be removed in the same release as EXT-04 |
-| DOC-02 | No `LICENSE` file exists, while the website and store listing both claim open source |
-| WEB-03 | Website claims version 2.0 while the store ships 1.0.0 |
-| WEB-04 | Privacy policy says no usage analytics while the page itself runs GA4 and Microsoft Clarity |
+| STORE-01 | Store privacy policy URL lands on the marketing homepage, not the policy. **Open, dashboard edit** |
+| STORE-02 | Zoom slider is shipped but not mentioned in the listing. **Open, dashboard edit** |
+| STORE-03 | Listing still advertises whitelist support, now removed from the code. **Open, must be applied with the 1.3.0 upload** |
 
 ## Non issues
 
@@ -85,3 +87,5 @@ Things that look wrong and are not. Do not "fix" these. See DECISIONS.md for the
 - The content script build using IIFE format instead of ESM.
 - `typeof chrome !== 'undefined'` guards throughout the content script.
 - Context menu invocations using `ELEMENT` scope while keyboard shortcuts use `PAGE` scope.
+- The `PING` message type, which exists only so the worker can decide whether to inject.
+- The instance marker on `window`, which is how an orphaned script is torn down.
