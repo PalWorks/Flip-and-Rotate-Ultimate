@@ -61,7 +61,7 @@ v1.2.0 and v1.3.0 milestones together. 1.1.0 and 1.2.0 were never released separ
 | REL-01 | `extension.zip` untracked. CI already builds it per tag | | **Done** |
 | REL-02 | Stale `v1.0.1` tag deleted locally | Remote deletion needs a push | **Done** |
 | QA-01 | Manual QA checklist extended with EXT-01, 02, 06, 07 regression steps | PLAYBOOK.md | Open |
-| QA-02 | Vitest harness, 36 tests over `src/lib` | `npm test` | **Done** |
+| QA-02 | Vitest harness (36 tests) plus a Playwright end-to-end suite, 21 checks against real Chrome and live YouTube | `npm test`, `npm run test:e2e` | **Done** |
 | DOC-01 | Full doc set updated to match shipped state | | **Done** |
 | DOC-02 | MIT `LICENSE` added | Backs the open source claim the site already made | **Done** |
 
@@ -540,7 +540,7 @@ safely, because EXT-01 changes behaviour on every page.
 | REL-03 | Decide the fate of the `gh-pages` branch | Abandoned since commit `1878d10` migrated deployment to `actions/deploy-pages`. Delete it or document why it is kept | Needs a decision |
 | WEB-05 | Untrack `website/.vite/deps` | Vite's dependency cache is committed to git | **Done** |
 | STORE-02 | Add the zoom slider to the store listing | 0.5x to 3x zoom is implemented and shipped but is not mentioned anywhere in the listing copy | Owner, dashboard |
-| QA-02 | Automated test harness | Vitest for pure logic such as `getSmartTarget` and the transform string builder. Playwright for a real Chrome with the unpacked extension, which is the only way to test EXT-01 properly | **Done** |
+| QA-02 | Automated test harness | Vitest for pure logic (36 tests) plus a Playwright end-to-end suite in `e2e/` driving real Chrome against live YouTube (21 checks), which is the only way to test EXT-01 properly | **Done** |
 | DOC-01 | Keep this doc set current | Update CHANGELOG.md on every release and DECISIONS.md whenever a rejected alternative is worth recording | **Done** |
 | DOC-02 | Add a `LICENSE` file | There is none. The website says "Open Source Software" and the store listing carries an "Open Source" badge. Without a licence file the default is all rights reserved, so both claims are currently unbacked. MIT recommended | **Done** |
 

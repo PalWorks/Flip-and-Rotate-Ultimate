@@ -34,3 +34,7 @@ website/.vite/
 
 # built extension package (CI builds and attaches this on every v* tag)
 extension.zip
+
+# e2e artefacts
+e2e/screenshots/
+e2e/results.json

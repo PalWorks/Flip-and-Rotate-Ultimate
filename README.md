@@ -444,9 +444,10 @@ angle, which is what the drag dial uses.
 ## Testing
 
 ```bash
-npm test          # vitest, 36 tests
+npm test          # vitest, 36 unit tests
+npm run test:e2e  # real Chrome + unpacked extension + live YouTube, 21 checks
 npm run typecheck # tsc --noEmit, strict
-npm run verify    # build + verify-build + typecheck + test, the full gate
+npm run verify    # build + verify-build + typecheck + unit tests
 ```
 
 What exists today:
@@ -466,9 +467,17 @@ Unit coverage is deliberately scoped to logic that is pure and worth protecting:
 - `src/lib/urls.ts` restricted URL classification, including a test that we never tell a user to
   refresh a `chrome://` page, because refreshing one can never help.
 
-**Still missing: end to end coverage.** Playwright driving a real Chrome with the unpacked extension
-is the only way to test EXT-01 properly, because it concerns tab lifecycle relative to install time
-and cannot be simulated in jsdom. That is the highest value contribution available right now.
+End to end coverage lives in [`e2e/`](e2e/README.md): Playwright drives real Chrome with the
+extension loaded unpacked, against live YouTube. It proves EXT-01 the only way it can be proved, by
+opening a tab, installing the extension **afterwards**, and clicking the toolbar icon.
+
+Note that Chrome 152 silently ignores `--load-extension`, so the harness installs through the CDP
+`Extensions` domain instead. `Extensions.triggerAction` is what makes a genuine toolbar click
+automatable. The `e2e/README.md` documents that and two other traps.
+
+**Still missing:** context menu items and `chrome.commands` shortcuts are native browser UI that no
+harness can drive. Both share the verified `dispatch()` path, so the untested surface is the small
+`switch` statements that map menu ids to actions.
 
 ---
 

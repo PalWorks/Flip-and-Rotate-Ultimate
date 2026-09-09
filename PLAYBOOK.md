@@ -8,7 +8,8 @@ Step by step operational procedures. Follow these exactly.
 
 ```bash
 npm install
-npm run verify   # build + verify-build + typecheck + tests, the full gate
+npm run verify    # build + verify-build + typecheck + unit tests
+npm run test:e2e  # real Chrome against live YouTube, needs google-chrome and xvfb-run
 ```
 
 Or the individual steps:
@@ -51,8 +52,12 @@ The site uses a hash router, so deep links are `#/privacy`, `#/terms`, `#/contac
 ## Manual QA checklist
 
 Run the whole list for any change to `src/content/` or `background.ts`. Run the marked subset for
-anything else. `npm test` covers the pure logic in `src/lib`, but everything below needs a real
-browser, so this checklist is still the only safety net for behaviour.
+anything else.
+
+**Run `npm run test:e2e` first.** It automates 21 of these checks against real Chrome and live
+YouTube, including every EXT-01, EXT-02, EXT-03, EXT-06, EXT-07 and EXT-12 regression step. What
+remains manual is the context menu, the keyboard shortcuts, and the site compatibility spot check,
+because those are native UI or subjective.
 
 ### Core transforms
 

@@ -27,7 +27,9 @@ tracked as STORE-01, STORE-02 and STORE-03.
   actually help, never for `chrome://` pages or the Web Store.
 - **Animations toggle** in the panel settings menu (EXT-12).
 - **Automated tests** (QA-02). Vitest, 36 tests over the extracted pure logic in `src/lib`. CI now
-  runs typecheck, tests and build verification before every release.
+  runs typecheck, tests and build verification before every release. Plus an end-to-end suite in
+  `e2e/` that drives real Chrome with the extension loaded unpacked against live YouTube, 21 checks,
+  including proof that EXT-01 works on a tab opened before the extension was installed.
 - **MIT LICENSE** (DOC-02), backing the open source claim the website and store listing already made.
 
 ### Fixed
