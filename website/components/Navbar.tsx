@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { STORE_URL } from '../constants';
 import { MenuIcon, XIcon } from './Icons';
 
 interface NavbarProps {
@@ -41,7 +42,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute }) => {
 
         <div className="flex items-center gap-4">
           <a
-            href="https://chrome.google.com/webstore"
+            href={STORE_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="hidden md:block bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all transform hover:scale-105"
@@ -74,7 +75,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute }) => {
             </a>
           ))}
           <a
-            href="https://chrome.google.com/webstore"
+            href={STORE_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="bg-slate-900 text-white px-4 py-3 rounded-lg text-sm font-medium text-center mt-2"

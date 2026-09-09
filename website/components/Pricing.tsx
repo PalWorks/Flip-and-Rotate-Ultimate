@@ -1,4 +1,5 @@
 import React from 'react';
+import { STORE_URL, EXTENSION_VERSION } from '../constants';
 import { CheckIcon, ChromeIcon } from './Icons';
 
 export const Pricing: React.FC = () => {
@@ -46,7 +47,7 @@ export const Pricing: React.FC = () => {
             </div>
 
             <a
-              href="https://chrome.google.com/webstore"
+              href={STORE_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="block w-full py-4 px-6 bg-gradient-to-r from-primary-600 to-secondary-600 hover:from-primary-500 hover:to-secondary-500 rounded-xl font-bold text-center text-lg shadow-lg shadow-primary-900/20 transition-all hover:scale-[1.02]"
@@ -55,7 +56,7 @@ export const Pricing: React.FC = () => {
             </a>
 
             <p className="text-center text-xs text-slate-500 mt-4">
-              Version 2.0 • Compatible with Chrome v88+
+              {`Version ${EXTENSION_VERSION}`} • Compatible with Chrome v88+
             </p>
           </div>
         </div>

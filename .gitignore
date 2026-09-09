@@ -28,3 +28,6 @@ graphify-out/
 
 # prompt source documents
 *.docx
+
+# vite dependency cache
+website/.vite/

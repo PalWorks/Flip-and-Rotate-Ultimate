@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { STORE_URL, EXTENSION_VERSION } from '../constants';
 import { Testimonials } from '../components/Testimonials';
 
 import { Pricing } from '../components/Pricing';
@@ -47,7 +48,7 @@ export const Home: React.FC = () => {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                 </span>
-                v2.0: The Ultimate Engineering Update
+                {`v${EXTENSION_VERSION}`}: Works on tabs you already have open
               </div>
 
               <h1 className="text-5xl md:text-7xl font-extrabold text-slate-900 tracking-tight mb-8 leading-[1.1]">
@@ -62,7 +63,7 @@ export const Home: React.FC = () => {
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center">
                 <a
-                  href="https://chrome.google.com/webstore"
+                  href={STORE_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 bg-slate-900 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-slate-800 hover:scale-105 transition-all shadow-xl shadow-slate-900/20"
@@ -282,7 +283,7 @@ export const Home: React.FC = () => {
             Join thousands of users flipping the web today. Completely free and open source.
           </p>
           <a
-            href="https://chrome.google.com/webstore"
+            href={STORE_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 bg-slate-900 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-slate-800 hover:scale-105 transition-all shadow-xl"
