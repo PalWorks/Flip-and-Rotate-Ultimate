@@ -10,14 +10,14 @@ export const TermsOfService: React.FC = () => {
         <section className="mb-8">
           <h2 className="text-2xl font-semibold text-slate-800 mb-4">1. Acceptance of Terms</h2>
           <p className="text-slate-600 leading-relaxed">
-            By installing and using the "Flip and Rotate Ultimate" Chrome Extension, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use the extension.
+            By installing and using the "Flip, Rotate and Mirror Ultimate" Chrome Extension, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use the extension.
           </p>
         </section>
 
         <section className="mb-8">
           <h2 className="text-2xl font-semibold text-slate-800 mb-4">2. License</h2>
           <p className="text-slate-600 leading-relaxed">
-            Flip and Rotate Ultimate is open-source software. You are free to use, modify, and distribute the code under the terms of the MIT License provided in the source code repository.
+            Flip, Rotate and Mirror Ultimate is open-source software. You are free to use, modify, and distribute the code under the terms of the MIT License provided in the source code repository.
           </p>
         </section>
 

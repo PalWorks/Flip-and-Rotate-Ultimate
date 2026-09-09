@@ -97,7 +97,7 @@ chrome.runtime.onInstalled.addListener(() => {
   chrome.runtime.setUninstallURL('https://palworks.github.io/Flip-and-Rotate-Ultimate/#/uninstall');
 
   chrome.contextMenus.removeAll(() => {
-    chrome.contextMenus.create({ id: 'flip-root', title: 'Flip and Rotate Ultimate', contexts: ['all'] });
+    chrome.contextMenus.create({ id: 'flip-root', title: 'Flip, Rotate and Mirror', contexts: ['all'] });
 
     const items: Array<[string, string]> = [
       ['flip-x', 'Flip Horizontally'],

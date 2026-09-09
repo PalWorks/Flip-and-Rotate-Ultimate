@@ -53,25 +53,21 @@ The corrected copy below keeps the reading use case but scopes it to what actual
 
 ### Product name
 
-**Decision needed. See section 7.** The manifest currently ships `Flip and Rotate Ultimate` (24 of
-75 characters). It contains the verbs people search with, "flip" and "rotate", but none of the
-**nouns**: video, image, mirror, page. Competitors put those nouns in the title and that is the
-single largest ranking gap in this listing.
-
-Current, already applied in the dashboard:
+**Applied.** Chosen 2026-09-09, live in `public/manifest.json`.
 
 ```
-Flip and Rotate Ultimate
+Flip, Rotate and Mirror Ultimate: Video, Image, Page
 ```
 
-Recommended, pending your choice:
+52 of 75 characters. Six keywords, none repeated: flip, rotate, mirror, video, image, page. The
+brand block "Flip, Rotate and Mirror Ultimate" is 32 characters, so it survives intact in a
+truncated search result. Reasoning and the options considered are in section 7.
 
-```
-Flip and Rotate Ultimate: Video, Image, Page
-```
-
-44 of 75 characters. **Do not paste this until you have picked from section 7**, because it changes
-`public/manifest.json` and needs a fresh `extension.zip`.
+**A `short_name` was added alongside it.** Chrome truncates a long `name` in the toolbar and on
+`chrome://extensions`, so the manifest now carries `"short_name": "Flip and Rotate"` for those
+space-constrained surfaces. Google recommends a maximum of 12 characters there and states no hard
+limit; 15 is a deliberate overshoot, because the alternative readings ("Flip Rotate", "FlipRotate")
+lose the brand for three characters.
 
 ### Summary (short description)
 
@@ -90,8 +86,8 @@ multi-select and context menu integration", was written for a developer. It led 
 of video, image, mirror or webcam. The new one leads with the action and the object, then names the
 two use cases people actually arrive with.
 
-**This field is the manifest `description`.** Changing it means editing `public/manifest.json` and
-rebuilding the package, so it is bundled with the title decision in section 7.
+**Applied.** This field is the manifest `description`, so it ships in the package and the Summary
+field on the listing picks it up from the upload.
 
 ### Detailed description
 
@@ -322,7 +318,6 @@ Both live under Account settings and block publishing if unset.
 
 ## 6. Submission checklist
 
-- [ ] **Pick a title from section 7.** If not option D, I rebuild `extension.zip` first
 - [ ] Upload `extension.zip`
 - [ ] Confirm Summary picked up the new manifest description
 - [ ] Paste the optimised detailed description
@@ -394,13 +389,20 @@ Google rule.
 
 | | Title | Chars | Trade-off |
 |---|---|---|---|
-| **A** | `Flip and Rotate Ultimate: Video, Image, Page` | 44 | **Recommended.** Keeps the brand intact, adds the three highest value nouns, reads as a scope list rather than a keyword dump |
+| **CHOSEN** | `Flip, Rotate and Mirror Ultimate: Video, Image, Page` | 52 | **Applied 2026-09-09.** Six keywords, the most of any option. Adds "mirror", a search intent every other option misses. The 32 character brand block still fits the visible window |
+| A | `Flip and Rotate Ultimate: Video, Image, Page` | 44 | Keeps the original brand block, but has no "mirror" |
 | B | `Flip and Rotate Ultimate: Mirror Video and Image` | 48 | Trades "page" for "mirror". Better if webcam mirroring is the use case you want to own |
 | C | `Flip, Rotate and Mirror: Video, Image, Page` | 43 | Most keyword dense. **Drops "Ultimate"**, so it abandons brand recognition with 3,000 existing users |
 | D | `Flip and Rotate Ultimate` | 24 | No change. Zero risk, zero gain |
 
-**Recommendation: A.** It is the only option that adds search nouns without spending brand equity,
-and a comma separated scope list is a description of what the tool works on, not repetition.
+**Decision: the owner's own formulation, above.** It was better than my option A on the measure that
+matters: it carries six keywords instead of five, and the one it adds, "mirror", is a distinct search
+intent that A missed entirely. The cost I expected, pushing the nouns past the truncation point, does
+not materialise: "Flip, Rotate and Mirror Ultimate" is 32 characters, so a truncated result still
+reads as three stated capabilities rather than a cut-off keyword list.
+
+It is also truthful. Mirroring is what a horizontal flip does, so all six words name real functions.
+Overselling is what produced the 3.7 rating; this does not repeat that mistake.
 
 **Keyword stuffing is a suspension risk, not just a ranking one.** Google's listing guidance states
 plainly that "repetitive or irrelevant use of keywords can create an unpleasant user experience and

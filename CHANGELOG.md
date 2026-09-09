@@ -66,11 +66,18 @@ tracked as STORE-01, STORE-02 and STORE-03.
 
 ### Changed
 
-- **Renamed from "Flip & Rotate Ultimate" to "Flip and Rotate Ultimate."** The ampersand is gone
+- **Renamed from "Flip & Rotate Ultimate" to "Flip, Rotate and Mirror Ultimate."** The ampersand is gone
   from the manifest name, the in-page panel header, both failure messages, the website and the docs.
   The store listing name changes with this upload; the extension ID and the listing URL do not.
   Scope is text only. The seven store images still render the old name as artwork; refreshing them
   is deferred (STORE-04). Rationale in DECISIONS.md D11.
+- **Listing optimised for Chrome Web Store search.** The manifest `name` is now
+  "Flip, Rotate and Mirror Ultimate: Video, Image, Page" (52 of 75 characters), carrying six
+  non-repeating keywords where the old name carried two. A `short_name` of "Flip and Rotate" was
+  added, because Chrome truncates a long `name` in the toolbar and on `chrome://extensions`. The
+  manifest `description`, which becomes the listing Summary, was rewritten to lead with the action
+  and the object rather than with "any element". Full research and the measured keyword density are
+  in STORE_LISTING_COPY.md section 7.
 - `ActionType` and `TargetScope` are now declared once in `types.ts` instead of three times, where
   they had already drifted. Editing one copy used to produce a silent no-op (EXT-08).
 - Zoom has its own `ActionType.ZOOM` instead of riding on `ROTATE` with a `{zoom}` payload (EXT-09).

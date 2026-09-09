@@ -192,7 +192,7 @@ anyway.
 
 ---
 
-## D11: The product is named "Flip and Rotate Ultimate", spelled out, with no ampersand
+## D11: The product is named "Flip, Rotate and Mirror Ultimate", with no ampersand
 
 **Decision.** The ampersand is removed from the product name everywhere it appears in text: the
 manifest `name`, the in-page panel header, both EXT-02 failure messages, the console warning, the
@@ -222,3 +222,21 @@ escaped in HTML, in shell commands and in URLs, for no benefit.
 
 **Revisit if.** Store search analytics ever show that users type the ampersand form and fail to find
 us. The listing text can carry both spellings without renaming the product.
+
+**Amended 2026-09-09, same day.** The name was extended to "Flip, Rotate and Mirror Ultimate: Video, Image, Page"
+for Chrome Web Store search. Relevance, meaning title, summary and description, is the highest
+weighted ranking signal and the only one fully under our control, and title keywords outweigh
+description keywords. "Flip and Rotate Ultimate" carried both verbs and none of the nouns people
+search with: video, image, mirror, page. Every competitor in the niche carries a noun in its name.
+The full title is 52 of the 75 character limit, repeats no word, and every one of the six keywords
+names a real function, which keeps it clear of the keyword stuffing rule that risks suspension.
+
+A `short_name` of "Flip and Rotate" was added at the same time. Without one Chrome truncates the
+`name` wherever space is tight. It is 15 characters against a recommended maximum of 12, which the
+documentation states as a recommendation with no hard limit; the shorter readings lose the brand
+for three characters.
+
+**The short form is deliberately kept in four places** where space is the binding constraint and no
+one is searching: the in-page panel header, both EXT-02 failure tooltips, and the console warning.
+The context menu root reads "Flip, Rotate and Mirror", naming the actions rather than carrying a
+marketing word into a right-click menu.

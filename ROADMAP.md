@@ -75,7 +75,7 @@ paste-ready copy for the 1.3.0 submission.
 | STORE-01 | Chrome Web Store dashboard access | Set privacy policy URL to `.../#/privacy`. Deploy the site first | Open |
 | STORE-02 | Dashboard access | Add the 0.5x to 3x zoom slider to the listing copy | Owner, dashboard |
 | STORE-03 | Dashboard access | Remove the whitelist claim. **Must ship with the 1.3.0 upload, not after** | Open |
-| STORE-04 | Dashboard access | Rename the listing to "Flip and Rotate Ultimate". Text only. Artwork refresh deferred by owner decision, 2026-09-09 | Open |
+| STORE-04 | Dashboard access | Rename the listing to "Flip, Rotate and Mirror Ultimate: Video, Image, Page" and paste the optimised summary and description. See STORE_LISTING_COPY.md. Artwork refresh deferred by owner decision, 2026-09-09 | Open |
 | REL-03 | A decision from the owner | Delete the abandoned `gh-pages` branch, or document why it stays | Needs a decision |
 
 ### Decisions taken

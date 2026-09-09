@@ -99,7 +99,7 @@ export const Testimonials: React.FC = () => {
           <span className="text-primary-600 font-semibold tracking-wider uppercase text-sm">Community Love</span>
           <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mt-2 mb-4">Loved by 10,000+ Users</h2>
           <p className="text-slate-600 max-w-2xl mx-auto">
-            Join the growing community of developers, designers, and power users who rely on Flip and Rotate Ultimate.
+            Join the growing community of developers, designers, and power users who rely on Flip, Rotate and Mirror Ultimate.
           </p>
         </div>
 
