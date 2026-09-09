@@ -11,7 +11,8 @@
     ],
     "skipLibCheck": true,
     "types": [
-      "node"
+      "node",
+      "chrome"
     ],
     "moduleResolution": "bundler",
     "isolatedModules": true,
@@ -24,6 +25,19 @@
       ]
     },
     "allowImportingTsExtensions": true,
-    "noEmit": true
-  }
+    "noEmit": true,
+    "strict": true
+  },
+  "include": [
+    "types.ts",
+    "background.ts",
+    "src/**/*",
+    "scripts/**/*",
+    "*.config.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "website"
+  ]
 }

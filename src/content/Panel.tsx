@@ -17,8 +17,9 @@ interface PanelProps {
     onZoom: (scale: number) => void;
     onReset: () => void;
     onToggleSelectionMode: () => void;
-    onOpenSettings: () => void;
     onEnableIncognito: () => void;
+    animationsEnabled: boolean;
+    onToggleAnimations: () => void;
     onToggleFullPage: () => void;
     isSelectionMode: boolean;
     currentRotation: number;
@@ -38,8 +39,9 @@ const Panel: React.FC<PanelProps> = ({
     onZoom,
     onReset,
     onToggleSelectionMode,
-    onOpenSettings,
     onEnableIncognito,
+    animationsEnabled,
+    onToggleAnimations,
     onToggleFullPage,
     isSelectionMode,
     currentRotation,
@@ -259,6 +261,9 @@ const Panel: React.FC<PanelProps> = ({
                             }}>
                                 <button className="settings-menu-item" onClick={() => { onEnableIncognito(); setShowSettingsMenu(false); }}>
                                     Enable in Incognito
+                                </button>
+                                <button className="settings-menu-item" onClick={() => { onToggleAnimations(); }}>
+                                    {animationsEnabled ? 'Disable Animations' : 'Enable Animations'}
                                 </button>
                                 <button className="settings-menu-item" onClick={() => { onShowShortcuts(); setShowSettingsMenu(false); }}>
                                     Shortcuts
