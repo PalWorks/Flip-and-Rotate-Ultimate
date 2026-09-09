@@ -78,6 +78,10 @@ here is of what was prepared and handed over, not of what Google received.
 - The `v1.0.1` tag, which pointed at the same commit as `v1.0.0` with no content difference and no
   GitHub release. Deleted locally; the remote deletion needs a push (REL-02).
 - `website/.vite` dependency cache from version control (WEB-05).
+- The abandoned `gh-pages` branch (REL-03). Deployment moved to `actions/deploy-pages` in commit
+  `1878d10`; the branch head was from 2025-12-28 and held the old site. Verified before deleting
+  that the Pages API reports `build_type: workflow`, and verified after that the site still serves.
+  Recoverable from `549e9c3`.
 
 ### Changed
 

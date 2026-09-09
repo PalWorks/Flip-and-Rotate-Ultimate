@@ -22,7 +22,7 @@ v1.2.0 and v1.3.0 milestones together. 1.1.0 and 1.2.0 were never released separ
 | **0** | Audit and documentation | DOC | 1 | 1 | 0 | **Complete** | Full doc set committed, every backlog item has an ID and acceptance criteria | Done |
 | **1** | v1.1.0 Rating recovery | EXT, WEB, STORE | 8 | 6 | 2 | **Submitted 2026-09-09**, awaiting Google review | The advertised product is reachable | Wait for the review outcome |
 | **2** | v1.2.0 Correctness | EXT, WEB, QA | 7 | 7 | 0 | **Complete** | No known user visible bug on the happy path | Done |
-| **3** | v1.3.0 Hygiene | EXT, REL, WEB, STORE, QA, DOC | 13 | 10 | 3 | **Submitted 2026-09-09.** 1 decision outstanding | Debt paid down so v2 is cheap | Owner: decide REL-03. Wait for review |
+| **3** | v1.3.0 Hygiene | EXT, REL, WEB, STORE, QA, DOC | 13 | 11 | 2 | **Submitted 2026-09-09.** Code and repo complete | Debt paid down so v2 is cheap | Wait for the review outcome |
 | **4** | v2.0.0 Options page | EXT | 4 | 0 | 4 | **Scoped 2026-09-09** | Earns the "2.0" the website claimed | Resolve the EXT-14 network question first |
 
 ### Status by bucket
@@ -32,10 +32,10 @@ v1.2.0 and v1.3.0 milestones together. 1.1.0 and 1.2.0 were never released separ
 | `EXT` | Extension code | 16 | 12 | 4 | EXT-13 to EXT-16, all v2.0.0 |
 | `WEB` | Marketing website | 5 | 5 | 0 | none |
 | `STORE` | Chrome Web Store dashboard, **owner action only** | 5 | 0 | 5 | STORE-01 to 04 **submitted 2026-09-09**. STORE-05 artwork deferred |
-| `REL` | Release and CI process | 3 | 2 | 1 | REL-03 needs a decision |
+| `REL` | Release and CI process | 3 | 3 | 0 | none |
 | `QA` | Testing | 2 | 2 | 0 | none |
 | `DOC` | Documentation | 2 | 2 | 0 | none |
-| | **Total** | **33** | **23** | **10** | 4 submitted, 4 scoped for v2, 1 artwork task, 1 decision |
+| | **Total** | **33** | **24** | **9** | 4 submitted, 4 scoped for v2, 1 artwork task |
 
 ### Shipped in 1.3.0
 
@@ -69,7 +69,7 @@ v1.2.0 and v1.3.0 milestones together. 1.1.0 and 1.2.0 were never released separ
 
 **All four STORE items were submitted on 2026-09-09 and are awaiting Google review.** They stay
 open until the listing goes live, because a rejection sends them back. The copy that was submitted
-is in **STORE_LISTING_COPY.md**. REL-03 is the only item still needing a decision from the owner.
+is in **STORE_LISTING_COPY.md**. No item now needs a decision from the owner.
 
 | ID | Blocked on | Action |
 |---|---|---|
@@ -78,7 +78,6 @@ is in **STORE_LISTING_COPY.md**. REL-03 is the only item still needing a decisio
 | STORE-03 | Google review | Whitelist claim removed from the description and the storage justification | **Submitted 2026-09-09** |
 | STORE-04 | Google review | Renamed and the optimised summary and description pasted. Artwork refresh still deferred | **Submitted 2026-09-09** |
 | STORE-05 | New artwork | Regenerate the 7 store images. They render "FLIP & ROTATE ULTIMATE" and the screenshots show the old panel header. Deferred by the owner 2026-09-09 | Open |
-| REL-03 | A decision from the owner | Delete the abandoned `gh-pages` branch, or document why it stays | Needs a decision |
 
 ### Decisions taken
 
@@ -543,7 +542,7 @@ safely, because EXT-01 changes behaviour on every page.
 | EXT-10 | `GET_STATE` should not fall through to `applyTransform` | It currently re-applies the existing transform before responding. Harmless today, fragile later | **Done** |
 | REL-01 | Stop committing `extension.zip` | The release workflow already builds and attaches it on every `v*` tag. The committed copy is duplicate state that has already drifted once | **Done** |
 | REL-02 | Delete the `v1.0.1` tag | It points at the same commit as `v1.0.0`, has no content difference, and has no GitHub release. A version number that promises a change and delivers none will mislead | **Done** |
-| REL-03 | Decide the fate of the `gh-pages` branch | Abandoned since commit `1878d10` migrated deployment to `actions/deploy-pages`. Delete it or document why it is kept | Needs a decision |
+| REL-03 | Decide the fate of the `gh-pages` branch | Abandoned since commit `1878d10` migrated deployment to `actions/deploy-pages`. **Deleted 2026-09-09** after confirming the Pages API reports `build_type: workflow`, and that the branch head (`549e9c3`, 2025-12-28) held the old site while the live site already served current content. Recoverable from that SHA if ever needed | **Done** |
 | WEB-05 | Untrack `website/.vite/deps` | Vite's dependency cache is committed to git | **Done** |
 | STORE-02 | Add the zoom slider to the store listing | 0.5x to 3x zoom is implemented and shipped but is not mentioned anywhere in the listing copy | Owner, dashboard |
 | STORE-04 | Rename the listing to "Flip and Rotate Ultimate" | The ampersand is removed from the manifest, the panel, both failure messages, the website and the docs. The extension ID and listing URL are unaffected. Scope is text only: the 7 store images still render "FLIP & ROTATE ULTIMATE" as artwork and the screenshots still show the old panel header. Owner accepted that mismatch on 2026-09-09; regenerating the artwork is deferred, not cancelled | Owner, dashboard |
