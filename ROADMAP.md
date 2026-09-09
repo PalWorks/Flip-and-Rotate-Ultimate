@@ -67,6 +67,9 @@ v1.2.0 and v1.3.0 milestones together. 1.1.0 and 1.2.0 were never released separ
 
 ### Open, and why
 
+All four STORE items are covered field by field in **STORE_LISTING_COPY.md**, which is the
+paste-ready copy for the 1.3.0 submission.
+
 | ID | Blocked on | Action |
 |---|---|---|
 | STORE-01 | Chrome Web Store dashboard access | Set privacy policy URL to `.../#/privacy`. Deploy the site first | Open |

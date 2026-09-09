@@ -72,11 +72,14 @@ them to the user rather than fix them.
 
 ## Store and listing gaps
 
+Paste-ready copy for all of these is in **STORE_LISTING_COPY.md**.
+
 | ID | Gap |
 |---|---|
 | STORE-01 | Store privacy policy URL lands on the marketing homepage, not the policy. **Open, dashboard edit** |
 | STORE-02 | Zoom slider is shipped but not mentioned in the listing. **Open, dashboard edit** |
 | STORE-03 | Listing still advertises whitelist support, now removed from the code. **Open, must be applied with the 1.3.0 upload** |
+| STORE-04 | Listing name still carried the ampersand. Applied in the dashboard 2026-09-09; store artwork still renders the old name, deferred |
 
 ## Non issues
 

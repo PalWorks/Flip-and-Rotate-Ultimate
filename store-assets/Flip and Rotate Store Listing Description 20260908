@@ -1,0 +1,39 @@
+Take full control of your browsing experience with the most powerful flip and rotate extension for Chrome. Whether you need to fix a sideways video, mirror your camera for a meeting, or debug web designs, Flip and Rotate Ultimate handles it all with a single click.
+
+🚀 Why Choose Flip and Rotate Ultimate? 
+- Unlike basic tools that only rotate the entire page, our extension offers precise control. Select specific elements - videos, images, iframes, or text blocks - and transform them individually or all at once.
+
+✨ Key Features:
+
+🔄 Universal Flip and Rotate
+1. Flip Horizontally/Vertically: Instantly mirror any element or the entire webpage. Perfect for fixing mirrored webcam feeds on Google Meet, Zoom, or Twitch.
+2. Rotate 90° / 180° / 270°: Correct the orientation of smartphone videos (vertical video syndrome) on YouTube, Vimeo, and other platforms.
+3. Precision Control: Use our exclusive Interactive Floating Panel to dial in the exact rotation angle you need. Use our 0.5x to 3x zoom slider, to zoom in on any elements on the page.  
+
+🎯 Smart Selection & Multi-Select
+1. Smart Detect: Automatically identifies the most likely element you want to transform (like a video player) when you hover.
+2. Multi-Selection Mode: Hold Shift to select multiple elements and transform them simultaneously. A game-changer for developers and designers!
+
+🛠️ Power User Tools
+1. Context Menu Integration: Right-click anywhere to access quick flip and rotate actions.
+2. Keyboard Shortcuts: Work faster with customizable hotkeys (Alt+Shift+X to flip, Alt+Shift+R to rotate).
+
+💡 Perfect For:
+1. Video Streaming: Fix upside-down or sideways videos on any site.
+3. Online Meetings: Mirror your video feed during presentations.
+3. Web Development: Test responsive designs and element positioning.
+4. Reading: Rotate PDF viewers or scanned documents directly in the browser.
+5. Privacy Focused: We believe in privacy. Flip & Rotate Ultimate runs entirely locally on your browser. No user data is collected or sent to external servers.
+
+Get the ultimate control over your web content today!
+
+
+Single Purpose Description: The single purpose of this extension is to allow users to flip (horizontally/vertically) and rotate (90/180/270 degrees) web pages or specific elements (like videos and images) directly within the browser for better viewing and accessibility.
+
+Context Menus Justification: This permission is required to add "Flip" and "Rotate" options to the right-click context menu, allowing users to quickly transform the specific element or page they are interacting with.
+
+Storage Justification: This permission is used to save user preferences, such as the "Whitelist" of sites where the extension should be automatically enabled, and to persist the state of the interactive panel (e.g., position on screen).
+
+Host Permission Justification: The extension needs access to all hosts (<all_urls>) because its core functionality is to inject a content script that performs CSS transformations (flip/rotate) on ANY website the user visits. Without this, the extension cannot modify the page content as requested by the user.
+
+No data collected from any users. All options unchecked.
