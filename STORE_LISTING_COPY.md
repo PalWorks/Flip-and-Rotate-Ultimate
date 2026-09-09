@@ -53,55 +53,89 @@ The corrected copy below keeps the reading use case but scopes it to what actual
 
 ### Product name
 
+**Decision needed. See section 7.** The manifest currently ships `Flip and Rotate Ultimate` (24 of
+75 characters). It contains the verbs people search with, "flip" and "rotate", but none of the
+**nouns**: video, image, mirror, page. Competitors put those nouns in the title and that is the
+single largest ranking gap in this listing.
+
+Current, already applied in the dashboard:
+
 ```
 Flip and Rotate Ultimate
 ```
 
-24 of 75 characters. **Already applied** in the dashboard.
+Recommended, pending your choice:
+
+```
+Flip and Rotate Ultimate: Video, Image, Page
+```
+
+44 of 75 characters. **Do not paste this until you have picked from section 7**, because it changes
+`public/manifest.json` and needs a fresh `extension.zip`.
 
 ### Summary (short description)
 
+Optimised. This is what appears under your name in search results, so it is doing double duty as
+ranking text and as ad copy.
+
 ```
-Flip, rotate and zoom any element or the whole page. Smart media targeting, multi-select and context menu integration.
+Rotate or flip any video, image or whole page in one click. Mirror your webcam, fix sideways videos, zoom into any element.
 ```
 
-118 of 132 characters. This is the manifest `description`, which pre-fills the Summary field.
-Confirm the dashboard picked it up after the upload rather than keeping the old text.
+123 of 132 characters.
+
+The previous version, "Flip, rotate and zoom any element or the whole page. Smart media targeting,
+multi-select and context menu integration", was written for a developer. It led with an abstraction,
+"any element", and spent its last 60 characters on three internal feature names. It contained none
+of video, image, mirror or webcam. The new one leads with the action and the object, then names the
+two use cases people actually arrive with.
+
+**This field is the manifest `description`.** Changing it means editing `public/manifest.json` and
+rebuilding the package, so it is bundled with the title decision in section 7.
 
 ### Detailed description
 
-Limit 16,000 characters. The block below is the 2026-09-08 draft with issues 1 and 6 through 9
-corrected and the zoom slider retained. Everything else is the owner's wording, unchanged.
+Optimised. 2615 characters, 439 words, well inside the 16,000 limit.
 
 ```
-Take full control of your browsing experience with the most powerful flip and rotate extension for Chrome. Whether you need to fix a sideways video, mirror your camera for a meeting, or debug web designs, Flip and Rotate Ultimate handles it all with a single click.
+Rotate a video, flip an image, or mirror an entire web page in one click. Flip and Rotate Ultimate fixes sideways videos, mirrors your webcam for meetings, rotates scanned documents, and helps you debug web layouts, on any site you visit.
 
-🚀 Why Choose Flip and Rotate Ultimate?
-- Unlike basic tools that only rotate the entire page, our extension offers precise control. Select specific elements - videos, images, iframes, or text blocks - and transform them individually or all at once.
+Most tools only rotate the whole page. This one lets you pick the exact element you want. Hover over a video, image, iframe or block of text, click it, and transform just that one thing, or select several and transform them together.
 
-✨ Key Features:
+✨ KEY FEATURES
 
-🔄 Universal Flip and Rotate
-1. Flip Horizontally/Vertically: Instantly mirror any element or the entire webpage. Perfect for fixing mirrored webcam feeds on Google Meet, Zoom, or Twitch.
-2. Rotate 90° / 180° / 270°: Correct the orientation of smartphone videos (vertical video syndrome) on YouTube, Vimeo, and other platforms.
-3. Precision Control: Use our exclusive Interactive Floating Panel to dial the rotation in 45° steps. Use our 0.5x to 3x zoom slider, to zoom in on any element on the page.
+🔄 Rotate and flip anything
+1. Rotate video 90°, 180° or 270°: fix vertical video syndrome and upside down clips on YouTube, Vimeo, Twitch and anywhere else video plays.
+2. Flip horizontally or vertically: mirror any image, photo, video or the full webpage instantly.
+3. Mirror your camera: correct a reversed webcam feed on Google Meet, Zoom or Twitch before you present.
+4. Precision dial: set the rotation angle in 45° steps from our floating control panel.
+5. Zoom slider: scale any element from 0.5x up to 3x to inspect it closely.
 
-🎯 Smart Selection and Multi-Select
-1. Smart Detect: Automatically identifies the most likely element you want to transform (like a video player) when you hover.
-2. Multi-Selection Mode: Hold Shift to select multiple elements and transform them simultaneously. A game-changer for developers and designers!
+🎯 Smart selection
+1. Smart detect: hover and the extension picks the element you most likely mean, preferring the video player over the wrapper around it.
+2. Multi-select: hold Shift to select several elements and rotate or flip them all at once.
+3. Page or element scope: rotate a single image, or turn the entire browser window.
 
-🛠️ Power User Tools
-1. Context Menu Integration: Right-click anywhere to access quick flip and rotate actions.
-2. Keyboard Shortcuts: Work faster with customizable hotkeys (Alt+Shift+X to flip, Alt+Shift+R to rotate).
+🛠️ Power user tools
+1. Right-click menu: flip and rotate straight from the context menu on any element.
+2. Keyboard shortcuts: Alt+Shift+X to flip horizontally, Alt+Shift+Y to flip vertically, Alt+Shift+R to rotate. All remappable at chrome://extensions/shortcuts.
+3. Works on pages that were already open: no need to reload every tab after installing.
 
-💡 Perfect For:
-1. Video Streaming: Fix upside-down or sideways videos on any site.
-2. Online Meetings: Mirror your video feed during presentations.
-3. Web Development: Test responsive designs and element positioning.
-4. Reading: Rotate scanned documents and images embedded in a web page.
-5. Privacy Focused: We believe in privacy. Flip and Rotate Ultimate runs entirely locally on your browser. No user data is collected or sent to external servers.
+💡 WHO IT IS FOR
 
-Get the ultimate control over your web content today!
+1. Watching video: fix a sideways or upside down clip without downloading anything.
+2. Online meetings and streaming: mirror your camera feed so text reads the right way round.
+3. Web developers and designers: rotate and flip elements to test responsive layouts and spot alignment problems.
+4. Reading and photos: rotate an image or a scanned document that was photographed at the wrong angle.
+5. Accessibility: turn the page to a comfortable orientation on a rotated or wall mounted screen.
+
+🔒 PRIVACY
+
+Flip and Rotate Ultimate runs entirely inside your browser. It makes no network requests at all. No browsing history, no page content, no analytics, nothing is collected and nothing is sent anywhere. The only thing it saves is whether you want animations on or off.
+
+Open source under the MIT licence. The full code is on GitHub.
+
+Free, no ads, no watermarks, no account required.
 ```
 
 ### Category
@@ -288,9 +322,10 @@ Both live under Account settings and block publishing if unset.
 
 ## 6. Submission checklist
 
+- [ ] **Pick a title from section 7.** If not option D, I rebuild `extension.zip` first
 - [ ] Upload `extension.zip`
 - [ ] Confirm Summary picked up the new manifest description
-- [ ] Paste the corrected detailed description
+- [ ] Paste the optimised detailed description
 - [ ] Re-upload the seven existing graphic assets if the form requires them
 - [ ] Set official URL and support URL
 - [ ] Replace the **storage** justification
@@ -310,6 +345,121 @@ shortcuts, because `lastClickedElement` is recorded by a listener registered at 
 
 ---
 
+---
+
+## 7. Search optimisation
+
+Researched 2026-09-09 against published Chrome Web Store ranking analyses and Google's own listing
+guidance. Sources at the end of this section.
+
+### How Chrome Web Store ranking actually works
+
+It is not Google web search. Backlinks, domain authority and crawl budget are irrelevant. The signals
+that matter, in order:
+
+| Signal | Weight | In our control |
+|---|---|---|
+| **Relevance**: title, summary and description matching the query | Highest | **Yes, fully** |
+| Weekly active users | High | Indirectly |
+| Ratings count and average | High | Indirectly. We are at 3.7 from 6 |
+| Install velocity | High | Indirectly |
+| Update recency | Medium | Yes. 1.3.0 helps, the last update was January |
+| Featured / Verified badges | Low | Reported as weaker than developers assume |
+
+**Relevance is the only lever fully under our control**, and it is the one currently being wasted.
+Title keywords outweigh description keywords: an exact keyword match in the title beats the same word
+buried in the description.
+
+### The keyword gap
+
+The competing extensions in this niche encode the real search demand in their own names:
+
+| Competitor | Rating | Nouns in the title |
+|---|---|---|
+| Rotate that Video Player | 4.9 | video |
+| QuickFlip | 4.8 | none |
+| Flip-Rotate Image (Sempurna) | 4.4 | image |
+| Webpage Rotator | 4.1 | webpage |
+| RotateX: Image Rotator and Page Rotation | | image, page |
+| YT Mirror | | mirror |
+| **Flip and Rotate Ultimate** | **3.7** | **none** |
+
+Our title carries the two verbs and zero of the nouns. "Ultimate" is a brand word with no search
+volume, and it occupies 9 of the roughly 35 characters that show before truncation.
+
+### Title options
+
+All are within the 75 character hard limit. The 45 character guidance is a display heuristic, not a
+Google rule.
+
+| | Title | Chars | Trade-off |
+|---|---|---|---|
+| **A** | `Flip and Rotate Ultimate: Video, Image, Page` | 44 | **Recommended.** Keeps the brand intact, adds the three highest value nouns, reads as a scope list rather than a keyword dump |
+| B | `Flip and Rotate Ultimate: Mirror Video and Image` | 48 | Trades "page" for "mirror". Better if webcam mirroring is the use case you want to own |
+| C | `Flip, Rotate and Mirror: Video, Image, Page` | 43 | Most keyword dense. **Drops "Ultimate"**, so it abandons brand recognition with 3,000 existing users |
+| D | `Flip and Rotate Ultimate` | 24 | No change. Zero risk, zero gain |
+
+**Recommendation: A.** It is the only option that adds search nouns without spending brand equity,
+and a comma separated scope list is a description of what the tool works on, not repetition.
+
+**Keyword stuffing is a suspension risk, not just a ranking one.** Google's listing guidance states
+plainly that "repetitive or irrelevant use of keywords can create an unpleasant user experience and
+result in an item being suspended." None of options A to C repeat a word, which is what keeps them
+on the right side of that line.
+
+### What changed in the description, and why
+
+| Change | Reason |
+|---|---|
+| Opening line is now "Rotate a video, flip an image, or mirror an entire web page in one click" | The first paragraph carries the most weight after the title, and previously opened with "Take full control of your browsing experience", which contains no keyword at all |
+| Named the objects everywhere: video, image, photo, page, webpage, document | The old copy leaned on "element", which nobody searches for |
+| Added natural phrase variants: "rotate video", "flip an image", "mirror your camera", "vertical video", "upside down", "sideways" | Semantic variation catches long tail queries without repeating one term |
+| Named the platforms: YouTube, Vimeo, Twitch, Google Meet, Zoom | People search "rotate video YouTube" and "mirror camera Google Meet" |
+| Added "Works on pages that were already open" | The 1.3.0 headline fix, and a differentiator no competitor advertises |
+| Privacy section states the no network claim concretely | Trust signal that lifts install-to-click conversion |
+| Added "Free, no ads, no watermarks, no account required" | Common qualifying searches |
+
+Measured keyword density in the new description, against the 2 to 3 percent guidance for primary
+terms:
+
+| Term | Uses | Density |
+|---|---|---|
+| rotate | 14 | 3.31% |
+| flip | 10 | 2.36% |
+| video | 9 | 2.13% |
+| page | 6 | 1.42% |
+| image | 5 | 1.18% |
+| mirror | 5 | 1.18% |
+
+Nothing is repeated to the point of reading badly. Verify by reading it aloud, which is the test
+Google's guidance is really describing.
+
+### What copy cannot fix
+
+**Ratings are the second largest signal and ours are the weakest thing about the listing.** 3.7 from
+6 ratings, where extensions above 4.5 get a meaningful ranking advantage. No wording change moves
+that number. What moves it is 1.3.0 shipping, because the top rated competitors are at 4.8 and 4.9
+and the gap is a working-on-existing-tabs bug, not a copy problem.
+
+Screenshots do not affect ranking directly but strongly affect click-through from search results to
+the listing. Ours are stale and show the old name, which is worth revisiting once STORE-04 artwork
+is regenerated.
+
+### Sources
+
+- [How the Chrome Web Store Ranking Algorithm Works in 2026, ExtensionFast](https://www.extensionfast.com/blog/chrome-web-store-ranking-algorithm-how-extensions-get-ranked-in-2025)
+- [Chrome Web Store SEO: Ranking Guide, ExtensionFast](https://www.extensionfast.com/blog/chrome-web-store-seo-complete-ranking-guide-for-2025)
+- [Chrome Web Store Rankings, Patterns Across 120K Data Points, ExtensionRanker](https://extensionranker.com/blog/chrome-web-store-ranking-patterns)
+- [Making your listing shine, Chrome for Developers](https://developer.chrome.com/docs/webstore/best-listing)
+- [Updates to extension name length requirements, chromium-extensions](https://groups.google.com/a/chromium.org/g/chromium-extensions/c/mpDvFpT0KJM/m/WWFFQZFyAAAJ)
+
+**Caveat.** Google publishes no ranking algorithm. Everything above except the official listing
+guidance and the 75 character name limit is third party analysis of observed rankings, not
+documented behaviour. The relevance-beats-everything-you-control conclusion is consistent across all
+three independent sources, which is why I am acting on it, but it is inference from correlation.
+
+---
+
 ## Roadmap mapping
 
 | ID | Covered by |
@@ -318,3 +468,4 @@ shortcuts, because `lastClickedElement` is recorded by a listener registered at 
 | STORE-02 | Zoom slider, retained in Key Features 3 |
 | STORE-03 | Whitelist gone from the description and from the storage justification |
 | STORE-04 | Product name, section 2. Artwork deferred |
+| SEO | Section 7. Title options, optimised summary and description, ranking research |
