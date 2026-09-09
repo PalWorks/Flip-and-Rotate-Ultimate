@@ -16,6 +16,45 @@ currently empty and is required before the Submit button will enable.
 
 ---
 
+## Submission record
+
+**Submitted 2026-09-09 by the owner. Awaiting Google review.**
+
+Expect an in-depth review: the `<all_urls>` content script match triggers one regardless of the
+justification text, and it cannot be removed without breaking context menu element targeting.
+
+The dashboard state was not independently verified from the development session. This document
+records what was prepared and handed over, not what Google received.
+
+### Baseline, captured from the public listing just before review
+
+Keep these. They are the only before-picture we get for measuring whether the search optimisation in
+section 7 actually worked.
+
+| Metric | Value at 2026-09-09 |
+|---|---|
+| Listing name | Flip & Rotate Ultimate |
+| Published version | 1.0.0 |
+| Users | 3,000 |
+| Rating | **3.9 from 7 ratings** |
+| Last updated | 2026-01-01 |
+| Category | Developer Tools |
+
+Two things worth noting. The rating has drifted up from the 3.7 from 6 recorded at the audit, so a
+seventh rating arrived and it was a good one. And the store has been showing an eight month old
+build this whole time, which matters because update recency is itself a ranking signal.
+
+### What to watch after approval
+
+| Signal | Why |
+|---|---|
+| Rating trend | The EXT-01 fix targets the exact failure that produced the low ratings. This is the real test of the hypothesis |
+| Weekly users | Second largest ranking signal, and a flywheel once it moves |
+| Search position for "rotate video", "flip image", "mirror video" | Direct read on whether the title rewrite worked |
+| Uninstall feedback form responses | Already wired to the uninstall URL |
+
+---
+
 ## 0. Corrections needed to the draft
 
 Nine issues found in the 2026-09-08 draft. Two of them are claims that are not true of the shipped

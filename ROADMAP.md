@@ -20,22 +20,22 @@ v1.2.0 and v1.3.0 milestones together. 1.1.0 and 1.2.0 were never released separ
 | Phase | Milestone | Bucket focus | Items | Done | Open | Status | Exit criteria | Next action |
 |---|---|---|---|---|---|---|---|---|
 | **0** | Audit and documentation | DOC | 1 | 1 | 0 | **Complete** | Full doc set committed, every backlog item has an ID and acceptance criteria | Done |
-| **1** | v1.1.0 Rating recovery | EXT, WEB, STORE | 8 | 6 | 2 | **Code complete.** 2 store items blocked | The advertised product is reachable | Owner: apply STORE-01 and STORE-03 in the dashboard |
+| **1** | v1.1.0 Rating recovery | EXT, WEB, STORE | 8 | 6 | 2 | **Submitted 2026-09-09**, awaiting Google review | The advertised product is reachable | Wait for the review outcome |
 | **2** | v1.2.0 Correctness | EXT, WEB, QA | 7 | 7 | 0 | **Complete** | No known user visible bug on the happy path | Done |
-| **3** | v1.3.0 Hygiene | EXT, REL, WEB, STORE, QA, DOC | 13 | 10 | 3 | **Code complete.** 2 store items, 1 decision | Debt paid down so v2 is cheap | Owner: decide REL-03, apply STORE-02 and STORE-04 |
-| **4** | v2.0.0 | Not scoped | 0 | 0 | 0 | **Not scoped** | Earns the "2.0" the website claimed | Do not start until Phase 1 store items are applied |
+| **3** | v1.3.0 Hygiene | EXT, REL, WEB, STORE, QA, DOC | 13 | 10 | 3 | **Submitted 2026-09-09.** 1 decision outstanding | Debt paid down so v2 is cheap | Owner: decide REL-03. Wait for review |
+| **4** | v2.0.0 Options page | EXT | 4 | 0 | 4 | **Scoped 2026-09-09** | Earns the "2.0" the website claimed | Resolve the EXT-14 network question first |
 
 ### Status by bucket
 
 | Bucket | Meaning | Total | Done | Open | Open items |
 |---|---|---|---|---|---|
-| `EXT` | Extension code | 12 | 12 | 0 | none |
+| `EXT` | Extension code | 16 | 12 | 4 | EXT-13 to EXT-16, all v2.0.0 |
 | `WEB` | Marketing website | 5 | 5 | 0 | none |
-| `STORE` | Chrome Web Store dashboard, **owner action only** | 4 | 0 | 4 | STORE-01, STORE-02, STORE-03, STORE-04 |
+| `STORE` | Chrome Web Store dashboard, **owner action only** | 5 | 0 | 5 | STORE-01 to 04 **submitted 2026-09-09**. STORE-05 artwork deferred |
 | `REL` | Release and CI process | 3 | 2 | 1 | REL-03 needs a decision |
 | `QA` | Testing | 2 | 2 | 0 | none |
 | `DOC` | Documentation | 2 | 2 | 0 | none |
-| | **Total** | **28** | **23** | **5** | 4 dashboard edits, 1 decision |
+| | **Total** | **33** | **23** | **10** | 4 submitted, 4 scoped for v2, 1 artwork task, 1 decision |
 
 ### Shipped in 1.3.0
 
@@ -67,15 +67,17 @@ v1.2.0 and v1.3.0 milestones together. 1.1.0 and 1.2.0 were never released separ
 
 ### Open, and why
 
-All four STORE items are covered field by field in **STORE_LISTING_COPY.md**, which is the
-paste-ready copy for the 1.3.0 submission.
+**All four STORE items were submitted on 2026-09-09 and are awaiting Google review.** They stay
+open until the listing goes live, because a rejection sends them back. The copy that was submitted
+is in **STORE_LISTING_COPY.md**. REL-03 is the only item still needing a decision from the owner.
 
 | ID | Blocked on | Action |
 |---|---|---|
-| STORE-01 | Chrome Web Store dashboard access | Set privacy policy URL to `.../#/privacy`. Deploy the site first | Open |
-| STORE-02 | Dashboard access | Add the 0.5x to 3x zoom slider to the listing copy | Owner, dashboard |
-| STORE-03 | Dashboard access | Remove the whitelist claim. **Must ship with the 1.3.0 upload, not after** | Open |
-| STORE-04 | Dashboard access | Rename the listing to "Flip, Rotate and Mirror Ultimate: Video, Image, Page" and paste the optimised summary and description. See STORE_LISTING_COPY.md. Artwork refresh deferred by owner decision, 2026-09-09 | Open |
+| STORE-01 | Google review | Privacy policy URL set to `.../#/privacy` | **Submitted 2026-09-09** |
+| STORE-02 | Google review | Zoom slider added to the listing copy | **Submitted 2026-09-09** |
+| STORE-03 | Google review | Whitelist claim removed from the description and the storage justification | **Submitted 2026-09-09** |
+| STORE-04 | Google review | Renamed and the optimised summary and description pasted. Artwork refresh still deferred | **Submitted 2026-09-09** |
+| STORE-05 | New artwork | Regenerate the 7 store images. They render "FLIP & ROTATE ULTIMATE" and the screenshots show the old panel header. Deferred by the owner 2026-09-09 | Open |
 | REL-03 | A decision from the owner | Delete the abandoned `gh-pages` branch, or document why it stays | Needs a decision |
 
 ### Decisions taken
@@ -103,11 +105,11 @@ cannot be reached by anyone. Fixing those two things is the entire near term pla
 
 | Metric | Value | Source |
 |---|---|---|
-| Published version | 1.0.0 | Chrome Web Store |
-| Users | ~3,000 | Chrome Web Store |
-| Rating | 3.7 from 6 ratings | Chrome Web Store |
+| Published version | 1.0.0. **1.3.0 submitted 2026-09-09, in review** | Chrome Web Store |
+| Users | 3,000 | Chrome Web Store, checked 2026-09-09 |
+| Rating | **3.9 from 7 ratings**, was 3.7 from 6 at the audit | Chrome Web Store, checked 2026-09-09 |
 | Store category | Developer Tools | Chrome Web Store |
-| Last store update | 2026-01-01 | Chrome Web Store |
+| Last store update | 2026-01-01. Update recency is a ranking signal, so this alone helps | Chrome Web Store |
 | Last code commit | 2025-12-28 | git |
 | Automated tests | None | repository |
 
@@ -149,7 +151,7 @@ users can tell us something more useful than a number.
 | **v1.1.0** Rating recovery | Make the advertised product actually reachable | EXT-01, EXT-02, EXT-04, EXT-11, WEB-01, WEB-04, STORE-01, STORE-03 |
 | **v1.2.0** Correctness | Fix the real bugs behind the happy path | EXT-03, EXT-06, EXT-07, EXT-12, WEB-02, WEB-03, QA-01 |
 | **v1.3.0** Hygiene | Pay down debt so v2 is cheap to build | EXT-05, EXT-08, EXT-09, EXT-10, REL-01, REL-02, REL-03, WEB-05, STORE-02, STORE-04, QA-02, DOC-01, DOC-02 |
-| **v2.0.0** Earn the "2.0" the website already claims | Not yet scoped. See "Candidate v2 themes" |
+| **v2.0.0** Options page | Give the extension a home for support, feedback, donations and diagnostics | EXT-13, EXT-14, EXT-15, EXT-16 |
 
 ---
 
@@ -548,13 +550,70 @@ safely, because EXT-01 changes behaviour on every page.
 | QA-02 | Automated test harness | Vitest for pure logic (36 tests) plus a Playwright end-to-end suite in `e2e/` driving real Chrome against live YouTube (21 checks), which is the only way to test EXT-01 properly | **Done** |
 | DOC-01 | Keep this doc set current | Update CHANGELOG.md on every release and DECISIONS.md whenever a rejected alternative is worth recording | **Done** |
 | DOC-02 | Add a `LICENSE` file | There is none. The website says "Open Source Software" and the store listing carries an "Open Source" badge. Without a licence file the default is all rights reserved, so both claims are currently unbacked. MIT recommended | **Done** |
+| EXT-13 | Options page | The extension has no options page at all. `options_ui` in the manifest, reachable from the panel settings menu and from `chrome://extensions`. Host for EXT-14, 15 and 16 | v2.0.0 |
+| EXT-14 | Support and feedback entry points | Buttons opening the website contact page in a new tab. **Do not embed a form without resolving the D8 conflict first** | v2.0.0, decision needed |
+| EXT-15 | Donate section | Outbound button to a donation page. Permitted by store policy; disclose it on the listing | v2.0.0 |
+| EXT-16 | Debug log toggle and diagnostics copy | Verbose logging behind a setting, plus a clipboard diagnostics dump for support. Console only, never page content | v2.0.0 |
+
+---
+
+## v2.0.0 scope, committed 2026-09-09
+
+Requested by the owner. The theme is that the extension currently has **no home**: no options page,
+nowhere to ask for help, no way to say thank you, and no way for a user to hand us a useful bug
+report. Everything below is one page and the plumbing behind it.
+
+| ID | Item | Notes |
+|---|---|---|
+| EXT-13 | An options page | `options_ui` in the manifest, opened from the panel settings menu and from `chrome://extensions`. This partially reverses D10, which rejected an options page built solely to host the whitelist. The justification is different now |
+| EXT-14 | Support and feedback entry points | **Blocked on a decision. See the constraint below** |
+| EXT-15 | Donate section | Buttons to an external donation page |
+| EXT-16 | Debug log toggle and diagnostics copy | Applicable, and cheap |
+
+### The EXT-14 constraint, decide before building
+
+**An embedded feedback form would break DECISIONS.md D8 and contradict a claim we submitted to the
+Chrome Web Store on the same day.** Embedding a Tally iframe in the options page is a network
+request made by the extension. The listing, the privacy policy and the storage permission
+justification all state that the extension makes no network requests at all. D8 says this may be
+revisited only with a product decision and a listing and privacy policy update made first, in that
+order.
+
+| Option | What it means | Trade-off |
+|---|---|---|
+| **A. Buttons that open the website (recommended)** | "Report a problem" and "Send feedback" open `#/contact` in a new tab via `chrome.tabs.create` | **Zero network calls in the extension.** D8 holds, the privacy claim holds, nothing needs resubmitting. The form is one click away rather than in-page |
+| B. Embed the form in the options page | A real inline form | Breaks D8. Requires a privacy policy rewrite, a new store data disclosure, a changed permission justification and a fresh review. Also needs CSP and host permission work |
+
+**Recommendation: A.** The owner asked for "inline support and feedback buttons / forms"; buttons
+that open the existing pages satisfy the request without spending the privacy position, which is
+currently the extension's strongest differentiator against every competitor in the niche.
+
+### EXT-15 notes
+
+Chrome Web Store program policy permits donation links. The affiliate policy that governs this area
+targets **injected** affiliate links with no user benefit, not a donate button in the extension's
+own interface. Two conditions apply: the user must take a deliberate action, which a button
+satisfies, and the arrangement should be described on the store listing page. Same architecture as
+EXT-14, an outbound `chrome.tabs.create`, so it inherits the D8 answer.
+
+### EXT-16 notes
+
+**Applicable, and worth doing.** The extension already has failure paths that are currently invisible
+to a user: injection refused, no element selected, a transform applied to a node a single page app
+then replaced. Today those are a silent `console.warn`. A toggle in the options page that enables
+verbose logging, plus a "copy diagnostics" button that puts the manifest version, the current
+settings and the last N log lines on the clipboard, turns a useless "it doesn't work" report into a
+report we can act on. The clipboard is local, so this stays inside D8.
+
+Scope guard: log to the console only, never to storage by default, and never anything from the page
+itself. Logging page content would turn a diagnostics feature into a data collection feature and
+falsify the privacy claim by a different route.
 
 ---
 
 ## Candidate v2 themes, not yet committed
 
-The website already advertises a 2.0. These are candidates for earning it. None are scoped or
-approved. Do not start any of them while P0 items are open.
+Not scoped or approved, and not part of the v2.0.0 scope above.
 
 - Persist transforms per site so a corrected video stays corrected on the next visit.
 - Free angle rotation without the 45 degree snap, with the snap held behind a modifier key.

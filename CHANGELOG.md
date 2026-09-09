@@ -8,13 +8,28 @@ are noted under the release they shipped alongside.
 
 ---
 
+## [Unreleased] v2.0.0, scoped 2026-09-09
+
+Scoped, not started. An options page giving the extension a home for support, feedback,
+donations and diagnostics: EXT-13 to EXT-16 in ROADMAP.md.
+
+EXT-14 carries an open decision. An embedded feedback form would be a network request from the
+extension and would contradict the no-network claim submitted to the store on 2026-09-09. The
+scoped design opens the website in a new tab instead. See ROADMAP.md, the EXT-14 constraint.
+
+---
+
 ## [1.3.0] 2026-09-09
 
 Delivers the v1.1.0, v1.2.0 and v1.3.0 roadmap milestones together. 1.1.0 and 1.2.0 were never
 released separately, so this is the first release since 1.0.0.
 
-**Not yet submitted to the Chrome Web Store.** Three dashboard edits must accompany the upload,
-tracked as STORE-01, STORE-02 and STORE-03.
+**Submitted to the Chrome Web Store on 2026-09-09, awaiting review.** Uploaded by the owner with
+the listing changes tracked as STORE-01 through STORE-04. Expect an in-depth review: the
+`<all_urls>` content script match triggers one regardless of the justification text.
+
+The dashboard state was not independently verified from the development session, so the record
+here is of what was prepared and handed over, not of what Google received.
 
 ### Added
 

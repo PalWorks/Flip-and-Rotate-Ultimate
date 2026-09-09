@@ -146,6 +146,13 @@ distinction clearly.
 **Revisit if.** Never, without an explicit product decision and a corresponding store listing and
 privacy policy update made first, in that order.
 
+**Live test of this rule, 2026-09-09.** v2.0.0 scopes an options page carrying support, feedback
+and donate entry points (EXT-13 to EXT-15). An embedded feedback form would be a network request
+from the extension and would falsify a claim we submitted to the store the same day. The scoped
+design therefore opens the website in a new tab with `chrome.tabs.create` instead of embedding
+anything. EXT-16's diagnostics copy writes to the clipboard, which is local. **D8 holds.** See
+ROADMAP.md, the EXT-14 constraint.
+
 ---
 
 ## D9: React 19 in the extension, React 18.3.1 on the website
@@ -189,6 +196,11 @@ for a worse version of a native browser feature.
 **Revisit if.** We ever need site scoped behaviour that Chrome's own control cannot express, for
 example per site saved transforms, which is a v2 candidate and would need a different data model
 anyway.
+
+**Partially superseded 2026-09-09.** v2.0.0 adds an options page (EXT-13). This does not reopen
+the whitelist. D10 rejected building an options page *whose only purpose was to host the
+whitelist*; the page is now justified by support, feedback, donations and diagnostics, which have
+no native browser equivalent. Per site control remains Chrome's Site access setting.
 
 ---
 
