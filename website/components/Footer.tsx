@@ -8,7 +8,7 @@ export const Footer: React.FC = () => {
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center gap-3 mb-4">
               <img src="logo.jpg" alt="Logo" className="w-8 h-8 rounded-lg" />
-              <h3 className="text-white font-bold text-lg">Flip & Rotate Ultimate</h3>
+              <h3 className="text-white font-bold text-lg">Flip and Rotate Ultimate</h3>
             </div>
             <p className="text-sm text-slate-400 max-w-sm">
               The ultimate open-source tool for adjusting web page orientation.
@@ -43,7 +43,7 @@ export const Footer: React.FC = () => {
         </div>
 
         <div className="border-t border-slate-800 pt-8 text-center text-xs">
-          <p>&copy; {new Date().getFullYear()} Flip & Rotate Ultimate. Open Source Software.</p>
+          <p>&copy; {new Date().getFullYear()} Flip and Rotate Ultimate. Open Source Software.</p>
         </div>
       </div>
     </footer>

@@ -95,7 +95,7 @@ because those are native UI or subjective.
 - [ ] Keyboard shortcut works on all three.
 - [ ] On a page loaded after install, one click produces exactly one selection, not two. This proves
       no double injection.
-- [ ] On `chrome://extensions`, a red `!` badge appears and the tooltip reads "Flip & Rotate can't
+- [ ] On `chrome://extensions`, a red `!` badge appears and the tooltip reads "Flip and Rotate can't
       run on this page...". It must **not** say "refresh".
 - [ ] Navigate that tab to an ordinary page. The badge clears on its own.
 - [ ] The badge is scoped to its tab: switching to another tab shows no badge.

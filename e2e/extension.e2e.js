@@ -138,7 +138,7 @@ async function main() {
       const txt = h.shadowRoot.textContent || '';
       return { buttons: h.shadowRoot.querySelectorAll('button.panel-btn').length,
                slider: Boolean(h.shadowRoot.querySelector('input[type=range]')),
-               title: txt.includes('Flip & Rotate'), parent: h.parentElement.tagName };
+               title: txt.includes('Flip and Rotate'), parent: h.parentElement.tagName };
     });
     t.check('T2', 'Panel renders in a Shadow DOM hosted on <html>',
       ui.buttons >= 3 && ui.slider && ui.title && ui.parent === 'HTML', JSON.stringify(ui));

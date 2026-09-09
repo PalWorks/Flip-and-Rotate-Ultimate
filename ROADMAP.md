@@ -1,6 +1,6 @@
 # Roadmap
 
-**This file is the single source of truth for all work on Flip & Rotate Ultimate.**
+**This file is the single source of truth for all work on Flip and Rotate Ultimate.**
 Every backlog item lives here. Do not open work that is not listed here. If you find something new,
 add it here first with an ID, then do the work.
 
@@ -22,7 +22,7 @@ v1.2.0 and v1.3.0 milestones together. 1.1.0 and 1.2.0 were never released separ
 | **0** | Audit and documentation | DOC | 1 | 1 | 0 | **Complete** | Full doc set committed, every backlog item has an ID and acceptance criteria | Done |
 | **1** | v1.1.0 Rating recovery | EXT, WEB, STORE | 8 | 6 | 2 | **Code complete.** 2 store items blocked | The advertised product is reachable | Owner: apply STORE-01 and STORE-03 in the dashboard |
 | **2** | v1.2.0 Correctness | EXT, WEB, QA | 7 | 7 | 0 | **Complete** | No known user visible bug on the happy path | Done |
-| **3** | v1.3.0 Hygiene | EXT, REL, WEB, STORE, QA, DOC | 12 | 10 | 2 | **Code complete.** 1 store item, 1 decision | Debt paid down so v2 is cheap | Owner: decide REL-03, apply STORE-02 |
+| **3** | v1.3.0 Hygiene | EXT, REL, WEB, STORE, QA, DOC | 13 | 10 | 3 | **Code complete.** 2 store items, 1 decision | Debt paid down so v2 is cheap | Owner: decide REL-03, apply STORE-02 and STORE-04 |
 | **4** | v2.0.0 | Not scoped | 0 | 0 | 0 | **Not scoped** | Earns the "2.0" the website claimed | Do not start until Phase 1 store items are applied |
 
 ### Status by bucket
@@ -31,11 +31,11 @@ v1.2.0 and v1.3.0 milestones together. 1.1.0 and 1.2.0 were never released separ
 |---|---|---|---|---|---|
 | `EXT` | Extension code | 12 | 12 | 0 | none |
 | `WEB` | Marketing website | 5 | 5 | 0 | none |
-| `STORE` | Chrome Web Store dashboard, **owner action only** | 3 | 0 | 3 | STORE-01, STORE-02, STORE-03 |
+| `STORE` | Chrome Web Store dashboard, **owner action only** | 4 | 0 | 4 | STORE-01, STORE-02, STORE-03, STORE-04 |
 | `REL` | Release and CI process | 3 | 2 | 1 | REL-03 needs a decision |
 | `QA` | Testing | 2 | 2 | 0 | none |
 | `DOC` | Documentation | 2 | 2 | 0 | none |
-| | **Total** | **27** | **23** | **4** | 3 dashboard edits, 1 decision |
+| | **Total** | **28** | **23** | **5** | 4 dashboard edits, 1 decision |
 
 ### Shipped in 1.3.0
 
@@ -72,6 +72,7 @@ v1.2.0 and v1.3.0 milestones together. 1.1.0 and 1.2.0 were never released separ
 | STORE-01 | Chrome Web Store dashboard access | Set privacy policy URL to `.../#/privacy`. Deploy the site first | Open |
 | STORE-02 | Dashboard access | Add the 0.5x to 3x zoom slider to the listing copy | Owner, dashboard |
 | STORE-03 | Dashboard access | Remove the whitelist claim. **Must ship with the 1.3.0 upload, not after** | Open |
+| STORE-04 | Dashboard access | Rename the listing to "Flip and Rotate Ultimate". Text only. Artwork refresh deferred by owner decision, 2026-09-09 | Open |
 | REL-03 | A decision from the owner | Delete the abandoned `gh-pages` branch, or document why it stays | Needs a decision |
 
 ### Decisions taken
@@ -87,7 +88,7 @@ v1.2.0 and v1.3.0 milestones together. 1.1.0 and 1.2.0 were never released separ
 
 ## North star
 
-> Flip & Rotate Ultimate should work, instantly and correctly, on whatever page the user is
+> Flip and Rotate Ultimate should work, instantly and correctly, on whatever page the user is
 > already looking at. Every feature we advertise should be reachable by a user who has never read
 > the documentation.
 
@@ -144,7 +145,7 @@ users can tell us something more useful than a number.
 |---|---|---|
 | **v1.1.0** Rating recovery | Make the advertised product actually reachable | EXT-01, EXT-02, EXT-04, EXT-11, WEB-01, WEB-04, STORE-01, STORE-03 |
 | **v1.2.0** Correctness | Fix the real bugs behind the happy path | EXT-03, EXT-06, EXT-07, EXT-12, WEB-02, WEB-03, QA-01 |
-| **v1.3.0** Hygiene | Pay down debt so v2 is cheap to build | EXT-05, EXT-08, EXT-09, EXT-10, REL-01, REL-02, REL-03, WEB-05, STORE-02, QA-02, DOC-01, DOC-02 |
+| **v1.3.0** Hygiene | Pay down debt so v2 is cheap to build | EXT-05, EXT-08, EXT-09, EXT-10, REL-01, REL-02, REL-03, WEB-05, STORE-02, STORE-04, QA-02, DOC-01, DOC-02 |
 | **v2.0.0** Earn the "2.0" the website already claims | Not yet scoped. See "Candidate v2 themes" |
 
 ---
@@ -249,8 +250,8 @@ nothing. Two distinct messages are needed:
 
 | Condition | Message |
 |---|---|
-| Injection failed but URL is ordinary http or https | "Please refresh this page for Flip & Rotate to work here." |
-| URL is a browser restricted page or the Web Store | "Flip & Rotate can't run on this page. Chrome blocks extensions on browser and Web Store pages." |
+| Injection failed but URL is ordinary http or https | "Please refresh this page for Flip and Rotate to work here." |
+| URL is a browser restricted page or the Web Store | "Flip and Rotate can't run on this page. Chrome blocks extensions on browser and Web Store pages." |
 
 **Delivery mechanism.** We cannot render the React panel, because the absence of the content script
 is precisely the problem. Options considered:
@@ -540,6 +541,7 @@ safely, because EXT-01 changes behaviour on every page.
 | REL-03 | Decide the fate of the `gh-pages` branch | Abandoned since commit `1878d10` migrated deployment to `actions/deploy-pages`. Delete it or document why it is kept | Needs a decision |
 | WEB-05 | Untrack `website/.vite/deps` | Vite's dependency cache is committed to git | **Done** |
 | STORE-02 | Add the zoom slider to the store listing | 0.5x to 3x zoom is implemented and shipped but is not mentioned anywhere in the listing copy | Owner, dashboard |
+| STORE-04 | Rename the listing to "Flip and Rotate Ultimate" | The ampersand is removed from the manifest, the panel, both failure messages, the website and the docs. The extension ID and listing URL are unaffected. Scope is text only: the 7 store images still render "FLIP & ROTATE ULTIMATE" as artwork and the screenshots still show the old panel header. Owner accepted that mismatch on 2026-09-09; regenerating the artwork is deferred, not cancelled | Owner, dashboard |
 | QA-02 | Automated test harness | Vitest for pure logic (36 tests) plus a Playwright end-to-end suite in `e2e/` driving real Chrome against live YouTube (21 checks), which is the only way to test EXT-01 properly | **Done** |
 | DOC-01 | Keep this doc set current | Update CHANGELOG.md on every release and DECISIONS.md whenever a rejected alternative is worth recording | **Done** |
 | DOC-02 | Add a `LICENSE` file | There is none. The website says "Open Source Software" and the store listing carries an "Open Source" badge. Without a licence file the default is all rights reserved, so both claims are currently unbacked. MIT recommended | **Done** |

@@ -107,7 +107,7 @@ export const Home: React.FC = () => {
                         <div className="w-24 h-24 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-2xl mx-auto mb-4 shadow-lg flex items-center justify-center text-white">
                           <RefreshCwIcon className="w-12 h-12" />
                         </div>
-                        <h3 className="text-2xl font-bold text-slate-800">Flip & Rotate</h3>
+                        <h3 className="text-2xl font-bold text-slate-800">Flip and Rotate</h3>
                         <div className="mt-4 flex gap-2 justify-center">
                           <div className="px-3 py-1 bg-white rounded shadow-sm text-xs font-mono text-slate-500 border border-slate-200">Scale: 1.5x</div>
                           <div className="px-3 py-1 bg-white rounded shadow-sm text-xs font-mono text-slate-500 border border-slate-200">Rot: 180deg</div>

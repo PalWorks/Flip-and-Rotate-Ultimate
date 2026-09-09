@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Flip & Rotate Ultimate",
+  "name": "Flip and Rotate Ultimate",
   "version": "1.3.0",
   "description": "Flip, rotate and zoom any element or the whole page. Smart media targeting, multi-select and context menu integration.",
   "permissions": [

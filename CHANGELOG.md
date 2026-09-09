@@ -66,6 +66,11 @@ tracked as STORE-01, STORE-02 and STORE-03.
 
 ### Changed
 
+- **Renamed from "Flip & Rotate Ultimate" to "Flip and Rotate Ultimate."** The ampersand is gone
+  from the manifest name, the in-page panel header, both failure messages, the website and the docs.
+  The store listing name changes with this upload; the extension ID and the listing URL do not.
+  Scope is text only. The seven store images still render the old name as artwork; refreshing them
+  is deferred (STORE-04). Rationale in DECISIONS.md D11.
 - `ActionType` and `TargetScope` are now declared once in `types.ts` instead of three times, where
   they had already drifted. Editing one copy used to produce a silent no-op (EXT-08).
 - Zoom has its own `ActionType.ZOOM` instead of riding on `ROTATE` with a `{zoom}` payload (EXT-09).

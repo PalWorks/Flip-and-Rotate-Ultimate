@@ -38,12 +38,12 @@ export const Pricing: React.FC = () => {
             </div>
 
             <div className="space-y-4 mb-10">
-              <PricingFeature text="Full Rotation & Flip Capabilities" />
+              <PricingFeature text="Full Rotation and Flip Capabilities" />
               <PricingFeature text="Mirror Mode for Developers" />
               <PricingFeature text="Element Selection Mode" />
               <PricingFeature text="No Watermarks or Ads" />
               <PricingFeature text="100% Privacy Focused (No Tracking)" />
-              <PricingFeature text="Regular Updates & Support" />
+              <PricingFeature text="Regular Updates and Support" />
             </div>
 
             <a

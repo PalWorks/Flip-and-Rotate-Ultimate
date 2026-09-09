@@ -23,7 +23,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between">
         <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.location.hash = '#/'}>
           <img src="logo.jpg" alt="Logo" className="w-10 h-10 rounded-lg shadow-sm" />
-          <span className="font-bold text-lg md:text-xl text-slate-800 tracking-tight">Flip & Rotate Ultimate</span>
+          <span className="font-bold text-lg md:text-xl text-slate-800 tracking-tight">Flip and Rotate Ultimate</span>
         </div>
 
         {/* Desktop Navigation */}

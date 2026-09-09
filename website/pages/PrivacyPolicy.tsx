@@ -10,7 +10,7 @@ export const PrivacyPolicy: React.FC = () => {
         <section className="mb-8">
           <h2 className="text-2xl font-semibold text-slate-800 mb-4">1. Overview</h2>
           <p className="text-slate-600 leading-relaxed">
-            Flip & Rotate Ultimate ("we", "our", or "us") respects your privacy. This Privacy Policy describes how we handle information when you use our Chrome Extension. 
+            Flip and Rotate Ultimate ("we", "our", or "us") respects your privacy. This Privacy Policy describes how we handle information when you use our Chrome Extension. 
             <strong>In short: the extension collects nothing and sends nothing anywhere. This website, which is separate, uses analytics, and section 3 says exactly which.</strong>
           </p>
         </section>

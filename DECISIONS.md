@@ -189,3 +189,36 @@ for a worse version of a native browser feature.
 **Revisit if.** We ever need site scoped behaviour that Chrome's own control cannot express, for
 example per site saved transforms, which is a v2 candidate and would need a different data model
 anyway.
+
+---
+
+## D11: The product is named "Flip and Rotate Ultimate", spelled out, with no ampersand
+
+**Decision.** The ampersand is removed from the product name everywhere it appears in text: the
+manifest `name`, the in-page panel header, both EXT-02 failure messages, the console warning, the
+marketing website, this doc set, and the npm package identifiers. **Confirmed by the product owner
+on 2026-09-09.** The listing rename is tracked as STORE-04.
+
+**Reason.** Owner preference on the brand, plus one concrete defect it was already causing:
+`package.json` declared `"name": "flip-&-rotate-ultimate"`, which is not a valid npm package name.
+npm rejects any name where `encodeURIComponent(name) !== name`, and `&` encodes to `%26`. It went
+unnoticed only because the package is `"private": true`, so npm never validated it. A future
+decision to publish anything from this repo, or any tool that runs the same validator, would have
+failed on it.
+
+**Scope is text only.** The seven images in `store-assets/` render "FLIP & ROTATE ULTIMATE" as
+artwork, and the screenshots show the old panel header. Regenerating them was explicitly deferred by
+the owner on 2026-09-09, so the listing will briefly carry the new name over old artwork. This is a
+known, accepted mismatch, not an oversight.
+
+**What does not change.** The extension ID `nlbnapelehjkadekmfghljagafhbobhp`, the Chrome Web Store
+listing URL, the GitHub repository name, the GitHub Pages URL and the uninstall feedback URL are all
+unaffected. Existing installations continue to update normally, because Chrome keys updates on the
+extension ID and never on the name.
+
+**Rejected alternative.** Keep the ampersand and fix only the npm name. This would have left the
+brand inconsistent with the owner's stated preference and would have kept a character that has to be
+escaped in HTML, in shell commands and in URLs, for no benefit.
+
+**Revisit if.** Store search analytics ever show that users type the ampersand form and fail to find
+us. The listing text can carry both spellings without renaming the product.

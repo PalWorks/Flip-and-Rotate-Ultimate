@@ -329,7 +329,7 @@ if (typeof chrome !== 'undefined' && chrome.runtime?.onMessage) {
       const target = message.scope === TargetScope.PAGE ? document.body : lastClickedElement;
 
       if (!target) {
-        console.warn('Flip & Rotate: no element selected.');
+        console.warn('Flip and Rotate: no element selected.');
         return;
       }
 

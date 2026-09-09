@@ -218,7 +218,7 @@ const Panel: React.FC<PanelProps> = ({
                 }}
             >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <span style={{ fontWeight: 600, fontSize: '13px', color: '#fff' }}>Flip & Rotate</span>
+                    <span style={{ fontWeight: 600, fontSize: '13px', color: '#fff' }}>Flip and Rotate</span>
                     <span style={{
                         fontSize: '10px',
                         color: '#9ca3af',

@@ -50,7 +50,7 @@ export const ContactSection: React.FC = () => {
                         frameBorder="0"
                         marginHeight={0}
                         marginWidth={0}
-                        title="Flip & Rotate Ultimate - Get in Touch Form"
+                        title="Flip and Rotate Ultimate - Get in Touch Form"
                     ></iframe>
                 </div>
             </div>

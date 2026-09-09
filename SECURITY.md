@@ -8,7 +8,7 @@ Last reviewed: 2026-09-09, after the 1.3.0 execution
 
 ## The commitment
 
-> "We believe in privacy. Flip & Rotate Ultimate runs entirely locally on your browser. No user data
+> "We believe in privacy. Flip and Rotate Ultimate runs entirely locally on your browser. No user data
 > is collected or sent to external servers."
 > Chrome Web Store listing
 

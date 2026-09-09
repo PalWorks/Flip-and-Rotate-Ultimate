@@ -38,7 +38,7 @@ export function classifyInjectionFailure(url: string | undefined): InjectionFail
 
 export const FAILURE_MESSAGES: Record<InjectionFailure, string> = {
   [InjectionFailure.RESTRICTED]:
-    "Flip & Rotate can't run on this page. Chrome blocks extensions on browser and Web Store pages.",
+    "Flip and Rotate can't run on this page. Chrome blocks extensions on browser and Web Store pages.",
   [InjectionFailure.UNAVAILABLE]:
-    'Please refresh this page for Flip & Rotate to work here.',
+    'Please refresh this page for Flip and Rotate to work here.',
 };

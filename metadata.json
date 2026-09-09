@@ -1,5 +1,5 @@
 {
-  "name": "Flip & Rotate Ultimate",
-  "description": "A powerful utility to flip, rotate, and transform any page or specific element with animations. Includes context menus and whitelist controls.",
+  "name": "Flip and Rotate Ultimate",
+  "description": "Flip, rotate and zoom any element or the whole page. Smart media targeting, multi-select and context menu integration.",
   "requestFramePermissions": []
 }

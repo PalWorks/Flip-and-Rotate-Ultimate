@@ -1,6 +1,6 @@
 <div align="center">
 
-# Flip & Rotate Ultimate
+# Flip and Rotate Ultimate
 
 **Rotate, flip and zoom any element on any web page. Or the whole page.**
 
@@ -62,7 +62,7 @@ The usual workarounds are to download the file and open a desktop editor, or to 
 
 ### The solution
 
-Flip & Rotate Ultimate applies CSS transforms directly to whatever you point at. It runs entirely
+Flip and Rotate Ultimate applies CSS transforms directly to whatever you point at. It runs entirely
 in the browser, touches nothing on the network, and works on any element on any page: a video, an
 image, a canvas, a div, or the entire document.
 
